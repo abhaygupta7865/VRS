@@ -15,15 +15,15 @@ const pool = new pg.Pool({
     port: 5432,
     database:'VMS'
 });
-pool.query('select * from users',(err,res)=>{
-  if(!err){
-      console.log(res.rows)
-  }
-  else{
-      console.log(err.message)
-  }
-  pool.end
-})
+// pool.query('select * from users',(err,res)=>{
+//   if(!err){
+//       console.log(res.rows)
+//   }
+//   else{
+//       console.log(err.message)
+//   }
+//   pool.end
+// })
 
 // Define a JWT secret key. This should be isolated by using env variables for security
 const jwtSecretKey = 'dsfdsfsdfdsvcsvdfgefg'; // Replace with a secure key
@@ -137,10 +137,10 @@ app.post('/check-account', async (req, res) => {
 
 
 // API endpoint to GET all vehicles
-app.get('/api/vehicles', async (req, res) => {
-  const location=req.body
+app.post('/api/vehicles', async (req, res) => {
+  const {location}=req.body
   try {
-    const { rows: vehicles } = await pool.query('SELECT * FROM vehicles WHERE location = $1',{location});
+    const { rows: vehicles } = await pool.query('SELECT * FROM vehicles WHERE location = $1',[location]);
     res.json(vehicles);
   } catch (err) {
     console.error(err);

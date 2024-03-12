@@ -1,9 +1,9 @@
 import React, { useState, useEffect, isLoading, error } from 'react';
 import { FaStar } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
-import car1 from "../../../assets/white-car.png";
-import car2 from "../../../assets/car5.png";
-import car3 from "../../../assets/car6.png";
+// import car1 from "../../../assets/white-car.png";
+// import car2 from "../../../assets/car5.png";
+// import car3 from "../../../assets/car6.png";
 
 // const carListData = [
 //   {
@@ -48,12 +48,14 @@ const Cars = (props) => {
   const {location} = props
   console.log(location)
   const [carListData, setCarList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Fetch car data on component mount
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/vehicles',{
+        setIsLoading(true);
+        const response = await fetch('http://localhost:3080/api/vehicles',{
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -63,8 +65,11 @@ const Cars = (props) => {
         const data = await response.json();
         setCarList(data);
       } catch (err) {
-        console.error(err);
+        // console.error(err);
         // Handle error gracefully (e.g., display an error message)
+      }
+      finally {
+        setIsLoading(false); // Set isLoading to false regardless of success or error
       }
     };
 
@@ -105,7 +110,7 @@ const Cars = (props) => {
                   className='border space-y-3 border-gray-300 hover:border-primary font-ibm-plex-sans p-3 rounded-xl relative group cursor-pointer'>
                   <div className='w-full h-[300px]'>
                     <img className="object-contain sm:translate-x-8 group-hover:translate-x-16 duration-700"
-                      src={data.image} alt="" />
+                      src={data.image_url} alt="" />
                   </div>
                   <div className="relative p-5">
                     <div className="flex items-center gap-5">
