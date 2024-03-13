@@ -48,7 +48,7 @@ const Login = (props) => {
             ". Do you want to create a new account?"
         )
       ) {
-        logIn();
+        navigate("/Register_Login/RegisterUser")
       }
     });
   };

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, isLoading, error } from 'react';
+import React, { useState, useEffect, error } from 'react';
 import { FaStar } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
+import {NavLink} from 'react-router-dom';
 // import car1 from "../../../assets/white-car.png";
 // import car2 from "../../../assets/car5.png";
 // import car3 from "../../../assets/car6.png";
@@ -45,8 +46,8 @@ import { CiLocationOn } from "react-icons/ci";
 // ]
 
 const Cars = (props) => {
-  const {location} = props
-  console.log(location)
+  const {Location} = props
+  console.log(Location)
   const [carListData, setCarList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,7 +61,7 @@ const Cars = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ location }),
+          body: JSON.stringify({Location}),
         });
         const data = await response.json();
         setCarList(data);
@@ -83,7 +84,7 @@ const Cars = (props) => {
         <h1
           data-aos="fade-up"
           data-aos-delay="0"
-          className='text-white text-3xl sm:text-4xl font-semibols font-serif mb-3'>POPULAR CAR IN {location}</h1>
+          className='text-white text-3xl sm:text-4xl font-semibols font-serif mb-3'>POPULAR CAR IN {Location}</h1>
         {/* {Car Listing Cards} */}
         {isLoading && (
           <div className="text-center mt-4">
@@ -104,34 +105,35 @@ const Cars = (props) => {
           <div>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16'>
               {carListData.map((data) => (
-                <div key={data.name}
+                <NavLink key={data.Vehicle_name} to={`/car-details/${data.Vehicle_id}`}>
+                 <div key={data.Vehicle_name}
                   data-aos="fade-up"
                   data-aos-delay={data.aosDelay}
                   className='border space-y-3 border-gray-300 hover:border-primary font-ibm-plex-sans p-3 rounded-xl relative group cursor-pointer'>
                   <div className='w-full h-[300px]'>
                     <img className="object-contain sm:translate-x-8 group-hover:translate-x-16 duration-700"
-                      src={data.image_url} alt="" />
+                      src={data.Image_url} alt="" />
                   </div>
                   <div className="relative p-5">
                     <div className="flex items-center gap-5">
                       <div>
                         <FaStar className='text-primary h-15' />
                       </div>
-                      <div className=''>{data.rating}</div>
+                      <div className=''>{data.Vehicle_rating}</div>
                     </div>
-                    <div className="mt-2 text-sm sm:text-lg font-bold leading-loose tracking-tight text-primary">{data.name}</div>
+                    <div className="mt-2 text-sm sm:text-lg font-bold leading-loose tracking-tight text-primary">{data.Vehicle_name}</div>
                     <div className="flex items-center gap-5 my-1 text-xl font-normal leading-loose tracking-wider text-gray-400 sm:w-100px">
-                      <div>{data.type}</div>
+                      <div>{data.Transmission_type}</div>
                       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-                      <div>{data.engine}</div>
+                      <div>{data.Engine_type}</div>
                       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-                      <div>{data.seats}</div>
+                      <div>{data.Seats}</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center border-t border-solid border-gray-300 pr-4">
                     <div className='p-5'>
-                      <div className="font-normal leading-6 tracking-wider text-gray-500 text-lg">{data.availability}</div>
-                        <div className="text-xl font-bold leading-loose tracking-tight text-primary">₹{data.price}/hr</div>
+                      <div className="font-normal leading-6 tracking-wider text-gray-500 text-lg">{data.Availability}</div>
+                        <div className="text-xl font-bold leading-loose tracking-tight text-primary">₹{data.Vehicle_rent}/hr</div>
                       </div>
                       <div className="flex items-center gap-4 p-2 border border-gray-500 rounded-2xl">
                         <div><CiLocationOn className="text-green-500 text-3xl" /></div>
@@ -139,6 +141,7 @@ const Cars = (props) => {
                       </div>
                     </div>
                   </div>
+                  </NavLink>
               ))}
               </div>
             </div>

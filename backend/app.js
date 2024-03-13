@@ -66,21 +66,24 @@ app.post('/auth', async (req, res) => {
           const token = jwt.sign(loginData, jwtSecretKey);
           res.status(200).json({ message: 'success', token });
         }
-      });
-    } else {
-      // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
-      bcrypt.hash(password, 10, async function (_err, hash) {
-        const insertQuery = 'INSERT INTO users (email, password) VALUES ($1, $2)';
-        await pool.query(insertQuery, [email, hash]);
+      });}
+    //  else {
+    //   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
+    //   bcrypt.hash(password, 10, async function (_err, hash) {
+    //     const insertQuery = 'INSERT INTO users (email, password) VALUES ($1, $2)';
+    //     await pool.query(insertQuery, [email, hash]);
 
-        let loginData = {
-          email,
-          signInTime: Date.now(),
-        };
+    //     let loginData = {
+    //       email,
+    //       signInTime: Date.now(),
+    //     };
 
-        const token = jwt.sign(loginData, jwtSecretKey);
-        res.status(200).json({ message: 'success', token });
-      });
+    //     const token = jwt.sign(loginData, jwtSecretKey);
+    //     res.status(200).json({ message: 'success', token });
+    //   });
+    // }
+    else{
+      return res.status(401).json({ message: 'no user found' });
     }
   } catch (error) {
     console.error('Error during authentication:', error);
@@ -138,9 +141,9 @@ app.post('/check-account', async (req, res) => {
 
 // API endpoint to GET all vehicles
 app.post('/api/vehicles', async (req, res) => {
-  const {location}=req.body
+  const {Location}=req.body
   try {
-    const { rows: vehicles } = await pool.query('SELECT * FROM vehicles WHERE location = $1',[location]);
+    const { rows: vehicles } = await pool.query('SELECT * FROM vehicles WHERE location = $1',[Location]);
     res.json(vehicles);
   } catch (err) {
     console.error(err);
