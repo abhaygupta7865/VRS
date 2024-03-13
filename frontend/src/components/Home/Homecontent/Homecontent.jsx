@@ -1,6 +1,6 @@
 import React from 'react'
 // import carPng from "../../assets/car.png"
-import YellowCarPng from "../../../assets/YellowCar.png"
+import BlackCarPng from "../../../assets/HomePageCar.png"
 
 const Hero = ({theme}) => {
   return <div className='dark:bg-black dark:text-white duration-100 relative -z-20'>
@@ -10,10 +10,10 @@ const Hero = ({theme}) => {
          data-aos="zoom-in"
          data-aos-duration="1500"
         className='order-1 sm:order-2'>
-          <img src={theme === "dark" ? carPng : YellowCarPng} alt="" 
+          <img src={BlackCarPng} alt="" 
           className="relative -z-10 max-h-[600px] sm:scale-125 drop-shadow-[2px_20px_6px_rgba(0,0,0,0.50)]"/>
         </div>
-        <div className='order-2 sm:order-1 space-y-5 text-center sm:pr-32 ml-20'>
+        <div className='order-2 sm:order-1 space-y-5 text-center sm:pr-32 ml-50'>
           <p 
           data-aos="fade-up"
           className='text-primary text-2xl font-serif'>Self-Drive Car Rental in Bhopal</p>
