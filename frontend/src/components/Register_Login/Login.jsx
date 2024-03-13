@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import VehiclePng from '../../assets/RentalVehicle.png'
 import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
@@ -44,8 +45,8 @@ const Login = (props) => {
       else if (
         window.confirm(
           "An account does not exist with this email address: " +
-            email +
-            ". Do you want to create a new account?"
+          email +
+          ". Do you want to create a new account?"
         )
       ) {
         logIn();
@@ -92,35 +93,44 @@ const Login = (props) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="text-3xl font-bold mb-4">Login</div>
-      <div className="flex flex-col mb-4">
+    <div className="container mx-auto bg-gradient-to-r from-gray-200 to-white shadow-md rounded-lg overflow-hidden mt-10 flex flex-col items-center justify-center">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 py-8">
+    <div data-aos="fade-up"
+    data-aos-delay="1000" className="flex items-center justify-center">
+      <img src={VehiclePng} alt="Vehicle" className="w-full max-h-[300px] object-cover rounded-lg shadow-lg" />
+    </div>
+    <div className="space-y-4">
+      <h1 className="flex flex-col text-3xl font-bold mb-4 w-full items-center">Login</h1>
+      <div className="flex flex-col mb-4 w-full items-center">
         <input
           value={email}
           placeholder="Enter your email here"
           onChange={(ev) => setEmail(ev.target.value)}
-          className="inputBox p-2 rounded-md border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 rounded-md border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <label className="text-red-500 text-sm">{emailError}</label>
       </div>
-      <div className="flex flex-col mb-4">
-        <input 
+      <div className="flex flex-col mb-4 w-full items-center">
+        <input
           value={password}
           placeholder="Enter your password here"
           onChange={(ev) => setPassword(ev.target.value)}
-          className="inputBox p-2 rounded-md border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 rounded-md border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <label className="text-red-500 text-sm">{passwordError}</label>
       </div>
-      <div className="w-full">
-        <input
-          className="inputButton bg-blue-500 text-white p-2 rounded-md text-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700"
+      <div className="flex flex-col mb-4 w-full items-center">
+      <button className="btn bg-blue-500 text-white p-2 rounded-md text-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 "
           type="button"
           onClick={onButtonClick}
-          value="Log in"
-        />
+        >
+          Log in
+        </button>
       </div>
     </div>
+  </div>
+</div>
+
   );
 };
 

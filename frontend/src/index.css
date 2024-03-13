@@ -1,3 +1,10 @@
+.login-container {
+  background-image: url("[C:\Users\KAJU\Desktop\Vehicle Management System\VRS\frontend\src\assets\LoginPageBackground.jpg]");  /* Replace with the path to your image */
+  background-size: cover;  /* Ensure image covers the entire container */
+  background-position: center;  /* Center the image horizontally and vertically */
+  min-height: 100vh;  /* Set minimum height to viewport height for full-screen effect */
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
