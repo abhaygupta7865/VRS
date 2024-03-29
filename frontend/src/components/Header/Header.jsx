@@ -40,7 +40,8 @@ const Header = ({ theme, setTheme }) => {
           </div>
           <div className="hidden md:block">
             <ul className="flex items-center gap-8">
-              {NavLinks.map((data) => (
+              {
+              NavLinks.map((data) => (
                 <li key={data.id} className="py-4">
                   <NavLink
                     to={data.link}
@@ -49,7 +50,8 @@ const Header = ({ theme, setTheme }) => {
                     {data.name}
                   </NavLink>
                 </li>
-              ))}
+              ))
+              }
             </ul>
           </div>
 
