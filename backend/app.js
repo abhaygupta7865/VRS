@@ -7,6 +7,8 @@ import pg from 'pg';
 
 const app = express();
 
+app.use("/rent_car_images",express.static('images'))
+
 // PostgreSQL connection pool
 const pool = new pg.Pool({
     host:'localhost',
@@ -41,7 +43,28 @@ app.get('/', (_req, res) => {
 });
 
 
+app.post('/register', async (req, res) => {
+  try {
+    const { customer_name, customer_email, customer_password, customer_mobile_number, customer_date_of_birth } = req.body;
 
+    
+      const hash = await bcrypt.hash(customer_password, 10);
+      const insertQuery = 'INSERT INTO customer (customer_name, customer_email, customer_password, customer_mobile_number, customer_date_of_birth) VALUES ($1, $2, $3, $4, $5)';
+      await pool.query(insertQuery,[customer_name,customer_email, hash, customer_mobile_number, customer_date_of_birth ]);
+
+      let loginData = {
+        customer_email,
+        signInTime: Date.now(),
+      };
+
+      const token = jwt.sign(loginData, jwtSecretKey);
+      res.status(200).json({ message: 'User registered successfully', token });
+  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Registration failed' });
+  }
+});
 
 // The auth endpoint that creates a new user record or logs a user based on an existing record
 app.post('/auth', async (req, res) => {
@@ -49,12 +72,12 @@ app.post('/auth', async (req, res) => {
 
   try {
     // Look up the user entry in the database
-    const { rows } = await pool.query('SELECT email FROM users WHERE email = $1', [email]);
+    const { rows } = await pool.query('SELECT customer_email,customer_password FROM customer WHERE customer_email = $1', [email]);
     const user = rows[0];
 
     // If found, compare the hashed passwords and generate the JWT token for the user
     if (user) {
-      bcrypt.compare(password, user.password, function (_err, result) {
+      bcrypt.compare(password, user.customer_password, function (_err, result) {
         if (!result) {
           return res.status(401).json({ message: 'Invalid password' });
         } else {
@@ -67,21 +90,6 @@ app.post('/auth', async (req, res) => {
           res.status(200).json({ message: 'success', token });
         }
       });}
-    //  else {
-    //   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
-    //   bcrypt.hash(password, 10, async function (_err, hash) {
-    //     const insertQuery = 'INSERT INTO users (email, password) VALUES ($1, $2)';
-    //     await pool.query(insertQuery, [email, hash]);
-
-    //     let loginData = {
-    //       email,
-    //       signInTime: Date.now(),
-    //     };
-
-    //     const token = jwt.sign(loginData, jwtSecretKey);
-    //     res.status(200).json({ message: 'success', token });
-    //   });
-    // }
     else{
       return res.status(401).json({ message: 'no user found' });
     }
@@ -123,7 +131,8 @@ app.post('/check-account', async (req, res) => {
   const { email } = req.body;
 
   try {
-    const { rows } = await pool.query('SELECT email FROM users WHERE email = $1', [email]);
+    const { rows } = await pool.query('SELECT customer_email FROM customer WHERE customer_email = $1', [email]);
+    
     const userExists = rows.length === 1;
 
     res.status(200).json({
@@ -143,7 +152,7 @@ app.post('/check-account', async (req, res) => {
 app.post('/api/vehicles', async (req, res) => {
   const {Location}=req.body
   try {
-    const { rows: vehicles } = await pool.query('SELECT * FROM vehicles WHERE location = $1',[Location]);
+    const { rows: vehicles } = await pool.query('SELECT * FROM vehicles WHERE vehicle_location = $1',[Location]);
     res.json(vehicles);
   } catch (err) {
     console.error(err);

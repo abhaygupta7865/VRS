@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import LoginHome from './LoginHome'
 import Login from './Login'
-import RegisterUser from './RegisterUser'
 import React,{ useEffect, useState } from 'react'
 
 
@@ -38,7 +37,7 @@ function Register_Login() {
       <Routes>
           <Route path="/" element={<LoginHome email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
           <Route path="Login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />
-          <Route path="RegisterUser" element={<RegisterUser/>} />
+        
       </Routes>
     </div>
   )

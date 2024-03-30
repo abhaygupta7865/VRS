@@ -49,7 +49,7 @@ const Login = (props) => {
           ". Do you want to create a new account?"
         )
       ) {
-        navigate("/Register_Login/RegisterUser")
+        navigate("/RegisterUser")
       }
     });
   };

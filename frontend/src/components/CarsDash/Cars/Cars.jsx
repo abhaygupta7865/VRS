@@ -112,7 +112,7 @@ const Cars = (props) => {
                   className='border space-y-3 border-gray-300 hover:border-primary font-ibm-plex-sans p-3 rounded-xl relative group cursor-pointer'>
                   <div className='w-full h-[300px]'>
                     <img className="object-contain sm:translate-x-8 group-hover:translate-x-16 duration-700"
-                      src={data.vehicle_image} alt="image here" />
+                      src= {data.vehicle_image} alt="image here" />
                   </div>
                   <div className="relative p-5">
                     <div className="flex items-center gap-5">

@@ -1,20 +1,88 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Assuming you have axios installed
+import { useNavigate } from 'react-router-dom';
 
 function RegisterUser() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    customer_name: '',
+    customer_email: '',
+    customer_password: '',
+    customer_mobile_number: '',
+    customer_date_of_birth: '',
+    errors: {},
   });
-
+ 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    setFormData({ ...formData, [event.target.name]: event.target.value,errors: {
+      ...formData.errors,
+      // Clear the error for the specific field being edited
+      [event.target.name]: '',
+    }, });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here (e.g., send data to server)
-    console.log('Form submitted:', formData);
+
+    const errors = {};
+
+    if (!formData.customer_name) {
+      errors.customer_name = 'Name is required';
+    }
+    if (!formData.customer_email) {
+      errors.customer_email = 'Email is required';
+    } 
+    else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.customer_email)) {
+      errors.customer_email = 'Invalid email format';
+    }
+    else if(checkAccountExists){
+      errors.customer_email = 'User already registered';
+    }
+
+    if (!formData.customer_password) {
+      errors.customer_password = 'Password is required';
+      
+    }
+    else if (formData.customer_password.length < 7) {
+      errors.customer_password= "The password must be 8 characters or longer";
+      
+    }
+    if (!formData.customer_mobile_number) {
+      errors.customer_mobile_number = 'Mobile number is required'; // Add your validation for mobile number format
+    }
+    if (!formData.customer_date_of_birth) {
+      errors.customer_date_of_birth = 'Date of birth is required';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormData({ ...formData, errors });
+      return;
+    }
+
+    // Send data to API
+    axios.post('http://localhost:3080/register', formData)
+      .then((response) => {
+        console.log('User registered successfully:', response.data);
+        navigate("/Register_Login")
+        // Handle successful registration (e.g., clear form, redirect)
+      })
+      .catch((error) => {
+        console.error('Registration failed:', error);
+        // Handle API errors (e.g., display error message to user)
+      });
+  };
+  const checkAccountExists = (callback) => {
+    fetch("http://localhost:3080/check-account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    })
+      .then((r) => r.json())
+      .then((r) => {
+        callback(r?.userExists);
+      });
   };
 
   return (
@@ -22,53 +90,106 @@ function RegisterUser() {
       <h1 className="text-3xl font-bold mb-8">Register</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium mb-2">
+          <label htmlFor="customer_name" className="block text-sm font-medium mb-2">
             Name
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
-            className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.name}
+            id="customer_name"
+            name="customer_name"
+            className={`w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+              formData.errors.customer_name ? 'border-red-500' : ''
+            }`}
+            value={formData.customer_name}
             onChange={handleChange}
           />
+          {formData.errors.customer_name && (
+            <span className="text-red-500 text-xs mt-1">{formData.errors.customer_name}</span>
+          )}
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium mb-2">
+          <label htmlFor="customer_email" className="block text-sm font-medium mb-2">
             Email
           </label>
           <input
             type="email"
-            id="email"
-            name="email"
-            className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.email}
+            id="customer_email"
+            name="customer_email"
+            className={`w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+              formData.errors.customer_email ? 'border-red-500' : ''
+            }`}
+            value={formData.customer_email}
             onChange={handleChange}
           />
+          {formData.errors.customer_email && (
+            <span className="text-red-500 text-xs mt-1">{formData.errors.customer_email}</span>
+          )}
         </div>
         <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium mb-2">
+          <label htmlFor="customer_password" className="block text-sm font-medium mb-2">
             Password
           </label>
           <input
             type="password"
-            id="password"
-            name="password"
-            className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.email}
-            onChange={handleChange}
+            id="customer_password"
+            name="customer_password"
+            className={`w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+              formData.errors.customer_password ? 'border-red-500' : ''
+            }`}
+            value={formData.customer_password}
+            onChange={handleChange} 
           />
-        </div>
-        <button
-          type="submit"
-          className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-        >
-          Register
-        </button>
-      </form>
-    </div>
-  );
-}
-
-export default RegisterUser;
+            {formData.errors.customer_password && (
+              <span className="text-red-500 text-xs mt-1">{formData.errors.customer_password}</span>
+            )}
+          </div>
+          {/* New fields for mobileNumber and dateOfBirth */}
+          <div className="mb-4">
+            <label htmlFor="customer_mobile_number" className="block text-sm font-medium mb-2">
+              Mobile Number
+            </label>
+            <input
+              type="number"
+              id="customer_mobile_number"
+              name="customer_mobile_number"
+              className={`w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+                formData.errors.customer_mobile_number ? 'border-red-500' : ''
+              }`}
+              value={formData.customer_mobile_number}
+              onChange={handleChange}
+            />
+            {formData.errors.customer_mobile_number && (
+              <span className="text-red-500 text-xs mt-1">{formData.errors.customer_mobile_number}</span>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="customer_date_of_birth" className="block text-sm font-medium mb-2">
+              Date of Birth
+            </label>
+            <input
+              type="date"
+              id="customer_date_of_birth"
+              name="customer_date_of_birth"
+              className={`w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+                formData.errors.customer_date_of_birth ? 'border-red-500' : ''
+              }`}
+              value={formData.customer_date_of_birth}
+              onChange={handleChange}
+            />
+            {formData.errors.customer_date_of_birth && (
+              <span className="text-red-500 text-xs mt-1">{formData.errors.customer_date_of_birth}</span>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+          >
+            Register
+          </button>
+        </form>
+      </div>
+    );
+  }
+  
+  export default RegisterUser;
+  

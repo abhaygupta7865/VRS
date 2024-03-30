@@ -13,6 +13,7 @@ import Home from './components/Home/Home.jsx'
 import About from "./components/About/About.jsx";
 import Register_Login from "./components/Register_Login/Register_Login.jsx";
 import CarsDash from "./components/CarsDash/CarsDash.jsx";
+import RegisterUser from "./components/Register_Login/RegisterUser.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route  path="/About"  element={<About/>}/>
       <Route path="/Register_Login/*" element={<Register_Login/>}>
       </Route>
+      <Route path="/RegisterUser" element={<RegisterUser/>} />
 
     </Route>
   )
