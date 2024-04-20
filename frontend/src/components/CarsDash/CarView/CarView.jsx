@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 const CarView = () => { 
   const loggedIn= useSelector(state=> state.loggedIn)
   const carData= useSelector(state=> state.carData)
+  
   const navigate= useNavigate();
 
   

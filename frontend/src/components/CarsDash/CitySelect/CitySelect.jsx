@@ -22,7 +22,7 @@ const CitySelect = () => {
   const [timevalue, setValue] = useState(null);
   const [Datestate, setState] = useState([
     {
-      startDate: new Date(),
+      startDate: new Date().toISOString(),
       endDate: null,
       key: 'selection'
     }
@@ -38,6 +38,7 @@ const CitySelect = () => {
 
   const handleClick = () => {
     if (selectedCity) {
+<<<<<<< HEAD
       // props.setLocation(selectedCity);
       const convertedDateState = Datestate.map(item => ({
         ...item,
@@ -49,9 +50,18 @@ const CitySelect = () => {
         new Date(timevalue[0]),
         new Date(timevalue[1]),
       ] : null;
+=======
+      const startDate = new Date(Datestate[0].startDate).toISOString();
+      const endDate = Datestate[0].endDate ? new Date(Datestate[0].endDate).toISOString() : null;
+      
+      const startTime = timevalue ? timevalue[0].toISOString() : null;
+      const endTime = timevalue ? timevalue[1].toISOString() : null;
+
+      
+>>>>>>> origin/my_new_branch
       dispatch(setLocation(selectedCity))
-      dispatch(setDateState(convertedDateState));
-      dispatch(setTimeValue(convertedTimeValue));
+      dispatch(setDateState([ startDate, endDate]));
+      dispatch(setTimeValue([startTime, endTime]));
       navigate("/CarsDash/Cars");
     } else {
       alert('Please select a city');
@@ -98,6 +108,15 @@ const CitySelect = () => {
               </div>
               </div>
 
+<<<<<<< HEAD
+=======
+        <TimePicker.RangePicker 
+          format="HH:MM"
+          onChange={onChange}
+          value={timevalue}
+          activeBg='#C2185B'
+        />
+>>>>>>> origin/my_new_branch
 
               <div className='text-center text-lg font-medium py-2 px-4 rounded-full bg-pink-700 text-black hover:bg-pink-900'>
               <TimePicker.RangePicker

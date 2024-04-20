@@ -29,11 +29,16 @@ const initialState = {
   
   export const setDateState = (dateState) => {
     // Convert dateState to a serializable format
-    const serializedDateState = dateState.map(item => ({
-      ...item,
-      startDate: item.startDate.toISOString(),
-      endDate: item.endDate ? item.endDate.toISOString() : null,
-    }));
+    const serializedDateState = dateState.map(item => {
+      const startDate = item.startDate ? item.startDate.toISOString() : null;
+      const endDate = item.endDate ? item.endDate.toISOString() : null;
+  
+      return {
+        ...item,
+        startDate,
+        endDate,
+      };
+    });
   
     return (dispatch) => {
       dispatch({
@@ -43,11 +48,12 @@ const initialState = {
     };
   };
   
+  
   export const setTimeValue = (timeValue) => {
     // Convert timeValue to a serializable format
     const serializedTimeValue = timeValue ? {
-      start: timeValue[0].toISOString(),
-      end: timeValue[1].toISOString(),
+      start: timeValue[0] ? timeValue[0].toISOString() : null,
+      end: timeValue[1] ? timeValue[1].toISOString() : null,
     } : null;
   
     return (dispatch) => {
@@ -57,6 +63,7 @@ const initialState = {
       });
     };
   };
+  
 
   export const setLocation = (location) => {
     return (dispatch) => {
