@@ -23,7 +23,7 @@ const CitySelect = () => {
   const [timevalue, setValue] = useState(null);
   const [Datestate, setState] = useState([
     {
-      startDate: new Date(),
+      startDate: new Date().toISOString(),
       endDate: null,
       key: 'selection'
     }
@@ -39,20 +39,16 @@ const CitySelect = () => {
 
   const handleClick = () => {
     if (selectedCity) {
-      // props.setLocation(selectedCity);
-      const convertedDateState = Datestate.map(item => ({
-        ...item,
-        startDate: new Date(item.startDate),
-        endDate: item.endDate ? new Date(item.endDate) : null,
-      }));
-  
-      const convertedTimeValue = timevalue ? [
-        new Date(timevalue[0]),
-        new Date(timevalue[1]),
-      ] : null;
+      const startDate = new Date(Datestate[0].startDate).toISOString();
+      const endDate = Datestate[0].endDate ? new Date(Datestate[0].endDate).toISOString() : null;
+      
+      const startTime = timevalue ? timevalue[0].toISOString() : null;
+      const endTime = timevalue ? timevalue[1].toISOString() : null;
+
+      
       dispatch(setLocation(selectedCity))
-      dispatch(setDateState(convertedDateState));
-      dispatch(setTimeValue(convertedTimeValue));
+      dispatch(setDateState([ startDate, endDate]));
+      dispatch(setTimeValue([startTime, endTime]));
       navigate("/CarsDash/Cars");
     } else {
       alert('Please select a city');
@@ -88,6 +84,7 @@ const CitySelect = () => {
           format="HH:MM"
           onChange={onChange}
           value={timevalue}
+          activeBg='#C2185B'
         />
 
         <button onClick={handleClick} className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 text-lg">

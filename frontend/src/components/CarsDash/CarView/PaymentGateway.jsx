@@ -2,10 +2,18 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineCreditCard } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const PaymentGateway = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const carData= useSelector(state=> state.carData)
+  const Location = useSelector(state => state.location); 
+  const Datestate = useSelector(state => state.dateState); 
+  const Timevalue = useSelector(state => state.timeValue);
+
   const navigate=useNavigate();
+
+
   const onSubmit = (data) => {
     navigate("/MyTrip")
     console.log(data);
