@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCheckCircle } from "react-icons/fa";
 import { TfiLocationPin } from "react-icons/tfi";
-// import CarPng from '../../assets/Ford Ecosport MT Diesel.png';
-// import Car1 from '../../assets/MahindraMazaro.png';
-// import ProfilePic from '../../assets/SatwikPic.jpg';
+import CarPng from '../../assets/Ford Ecosport MT Diesel.png';
+import Car1 from '../../assets/MahindraMazaro.png';
+import ProfilePic from '../../assets/SatwikPic.jpg';
 
 const CustomerDeatils = [
   {
@@ -12,7 +12,7 @@ const CustomerDeatils = [
     customerName: "Satwik Baghel",
     customerEmail: "satwikbaghel8899@gmail.com",
     customerMobileNo: "6264116295",
-    //customerProfilePic: ProfilePic 
+    customerProfilePic: ProfilePic 
   }
 ]
 const MyTripDetails = [
@@ -21,7 +21,7 @@ const MyTripDetails = [
     MyTripId: "JPS69T1NP",
     name: "Ford Ecosport MT Diesel",
     registerNo: "MP04CV8899",
-    // image: CarPng,
+    image: CarPng,
     DateofStartTrip: "15 Feb",
     DateofEndTrip: "15 Feb",
     startTime: "11:00 AM",
@@ -35,7 +35,7 @@ const MyTripDetails = [
     MyTripId: "JPS69T1NG",
     name: "Mahindra Mazaro",
     registerNo: "MP04CV3099",
-    // image: Car1,
+    image: Car1,
     DateofStartTrip: "18 Feb",
     DateofEndTrip: "18 Feb",
     startTime: "11:00 AM",
