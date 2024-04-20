@@ -38,19 +38,6 @@ const CitySelect = () => {
 
   const handleClick = () => {
     if (selectedCity) {
-<<<<<<< HEAD
-      // props.setLocation(selectedCity);
-      const convertedDateState = Datestate.map(item => ({
-        ...item,
-        startDate: new Date(item.startDate),
-        endDate: item.endDate ? new Date(item.endDate) : null,
-      }));
-
-      const convertedTimeValue = timevalue ? [
-        new Date(timevalue[0]),
-        new Date(timevalue[1]),
-      ] : null;
-=======
       const startDate = new Date(Datestate[0].startDate).toISOString();
       const endDate = Datestate[0].endDate ? new Date(Datestate[0].endDate).toISOString() : null;
       
@@ -58,7 +45,6 @@ const CitySelect = () => {
       const endTime = timevalue ? timevalue[1].toISOString() : null;
 
       
->>>>>>> origin/my_new_branch
       dispatch(setLocation(selectedCity))
       dispatch(setDateState([ startDate, endDate]));
       dispatch(setTimeValue([startTime, endTime]));
@@ -107,16 +93,6 @@ const CitySelect = () => {
               </select>
               </div>
               </div>
-
-<<<<<<< HEAD
-=======
-        <TimePicker.RangePicker 
-          format="HH:MM"
-          onChange={onChange}
-          value={timevalue}
-          activeBg='#C2185B'
-        />
->>>>>>> origin/my_new_branch
 
               <div className='text-center text-lg font-medium py-2 px-4 rounded-full bg-pink-700 text-black hover:bg-pink-900'>
               <TimePicker.RangePicker
