@@ -1,12 +1,13 @@
 import { Route, Routes } from 'react-router-dom'
 import LoginHome from './LoginHome'
 import Login from './Login'
-import React,{ useEffect, useState } from 'react'
+import React,{ useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { setLoggedIn, setEmail } from '../../Store.js';
 
 
 function Register_Login() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [email, setEmail] = useState('')
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Fetch the user email and token from local storage
@@ -14,7 +15,7 @@ function Register_Login() {
   
     // If the token/email does not exist, mark the user as logged out
     if (!user || !user.token) {
-      setLoggedIn(false)
+      dispatch(setLoggedIn(false));
       return
     }
   
@@ -27,20 +28,20 @@ function Register_Login() {
     })
       .then((r) => r.json())
       .then((r) => {
-        setLoggedIn('success' === r.message)
-        setEmail(user.email || '')
+        dispatch(setLoggedIn('success' === r.message));
+        dispatch(setEmail(user.email || ''));
       })
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="Register_Login">
       <Routes>
-          <Route path="/" element={<LoginHome email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
-          <Route path="Login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />
+          <Route path="/" element={<LoginHome />} />
+          <Route path="Login" element={<Login />} />
         
       </Routes>
     </div>
   )
 }
 
-export default Register_Login
+export default Register_Login;

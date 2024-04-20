@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Assuming you have axios installed
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function RegisterUser() {
@@ -12,16 +12,19 @@ function RegisterUser() {
     customer_date_of_birth: '',
     errors: {},
   });
- 
+
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value,errors: {
-      ...formData.errors,
-      // Clear the error for the specific field being edited
-      [event.target.name]: '',
-    }, });
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+      errors: {
+        ...formData.errors,
+        [event.target.name]: '',
+      },
+    });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const errors = {};
@@ -35,20 +38,14 @@ function RegisterUser() {
     else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.customer_email)) {
       errors.customer_email = 'Invalid email format';
     }
-    else if(checkAccountExists){
-      errors.customer_email = 'User already registered';
-    }
-
+   
     if (!formData.customer_password) {
       errors.customer_password = 'Password is required';
-      
-    }
-    else if (formData.customer_password.length < 7) {
-      errors.customer_password= "The password must be 8 characters or longer";
-      
+    } else if (formData.customer_password.length < 7) {
+      errors.customer_password = 'The password must be 8 characters or longer';
     }
     if (!formData.customer_mobile_number) {
-      errors.customer_mobile_number = 'Mobile number is required'; // Add your validation for mobile number format
+      errors.customer_mobile_number = 'Mobile number is required';
     }
     if (!formData.customer_date_of_birth) {
       errors.customer_date_of_birth = 'Date of birth is required';
@@ -58,32 +55,30 @@ function RegisterUser() {
       setFormData({ ...formData, errors });
       return;
     }
+   
+    try {
+      const response = await axios.post('http://localhost:3080/check-account', {
+        email: formData.customer_email
+      });
+      if (response.data.userExists) {setFormData({ ...formData, errors: {...formData.errors,customer_email: 'User already exists',}, });
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking user existence:', error);
+      // Handle errors appropriately (e.g., display a generic error message)
+    }
 
-    // Send data to API
-    axios.post('http://localhost:3080/register', formData)
-      .then((response) => {
-        console.log('User registered successfully:', response.data);
-        navigate("/Register_Login")
-        // Handle successful registration (e.g., clear form, redirect)
-      })
-      .catch((error) => {
-        console.error('Registration failed:', error);
-        // Handle API errors (e.g., display error message to user)
-      });
+    // Register user if not found
+    try {
+      await axios.post('http://localhost:3080/register', formData);
+      console.log('User registered Successfully')
+      navigate('/Register_Login'); // Redirect to success page after registration
+    } catch (error) {
+      console.error('Error registering user:', error);
+      // Handle errors appropriately (e.g., display a generic error message)
+    }
   };
-  const checkAccountExists = (callback) => {
-    fetch("http://localhost:3080/check-account", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    })
-      .then((r) => r.json())
-      .then((r) => {
-        callback(r?.userExists);
-      });
-  };
+  
 
   return (
     <div className="container mx-auto px-4 py-16">

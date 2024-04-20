@@ -14,6 +14,7 @@ import About from "./components/About/About.jsx";
 import Register_Login from "./components/Register_Login/Register_Login.jsx";
 import CarsDash from "./components/CarsDash/CarsDash.jsx";
 import RegisterUser from "./components/Register_Login/RegisterUser.jsx";
+import MyTrip from "./components/MyTrip/MyTrip.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,7 +27,7 @@ const router = createBrowserRouter(
       <Route path="/Register_Login/*" element={<Register_Login/>}>
       </Route>
       <Route path="/RegisterUser" element={<RegisterUser/>} />
-
+      <Route path="/MyTrip" element={<MyTrip/>} />
     </Route>
   )
 );

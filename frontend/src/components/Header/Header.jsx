@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
-const NavLinks = [
+const Header_components = [
   {
     id: "1",
     name: "HOME",
@@ -17,13 +18,10 @@ const NavLinks = [
     name: "ABOUT",
     link: "/About",
   },
-  {
-    id: "4",
-    name: "BOOKING",
-    link: "/booking",
-  },
+ 
 ];
-const Header = ({ theme, setTheme }) => {
+const Header = () => {
+  const loggedIn = useSelector((state) => state.loggedIn); 
   return (
     <nav
       className="shadow-md bg-white
@@ -41,7 +39,7 @@ const Header = ({ theme, setTheme }) => {
           <div className="hidden md:block">
             <ul className="flex items-center gap-8">
               {
-              NavLinks.map((data) => (
+              Header_components.map((data) => (
                 <li key={data.id} className="py-4">
                   <NavLink
                     to={data.link}
@@ -52,6 +50,17 @@ const Header = ({ theme, setTheme }) => {
                 </li>
               ))
               }
+              {
+              loggedIn && ( // Render BOOKING link only if loggedIn is true
+                <li className="py-4">
+                  <NavLink
+                    to="/MyTrip"
+                    className="py-2 hover:border-b-2 hover:text-primary hover:border-primary transition-colors duration-500 text-lg font-medium"
+                  >
+                    MY TRIPS
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
 

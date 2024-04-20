@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import VehiclePng from '../../assets/RentalVehicle.png'
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { setLoggedIn } from '../../Store.js'; 
 
-const LoginHome = (props) => {
-  const { loggedIn, email } = props;
+const LoginHome = () => {
+  const { loggedIn, email } = useSelector((state) => ({
+    loggedIn: state.loggedIn,
+    email: state.email,
+  }),
+  shallowEqual
+);
+  const dispatch = useDispatch(); 
   const navigate = useNavigate();
+
+  const selectorData = useMemo(() => ({ loggedIn, email }), [loggedIn, email]);
+  const { loggedIn: memoizedLoggedIn, email: memoizedEmail } = selectorData;
 
   const onButtonClick = () => {
     // You'll update this function later
-    if (loggedIn) {
+    if (memoizedLoggedIn) {
       localStorage.removeItem("user");
-      props.setLoggedIn(false);
+      dispatch(setLoggedIn(false));
     } else {
       navigate("/Register_Login/Login");
     }
@@ -36,9 +47,9 @@ const LoginHome = (props) => {
         type="button"
         onClick={onButtonClick}
       >
-        {loggedIn ? "Log Out" : "Login"}
+       {memoizedLoggedIn ? "Log Out" : "Login"}
       </button>
-      {loggedIn && <div class="text-gray-600 text-base"> Your email address is {email} </div>}</div>
+      {memoizedLoggedIn && <div className="text-gray-600 text-base"> Your email address is {memoizedEmail} </div>}</div>
   </div>
     </div>
     

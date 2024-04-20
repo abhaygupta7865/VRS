@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import CitySelect from './CitySelect/CitySelect'
 import Cars from './Cars/Cars'
+import CarView from './CarView/CarView'
 import { Route, Routes } from 'react-router-dom'
+import PaymentGateway from './CarView/PaymentGateway'
 
 const CarsDash = () => {
-  const [Location, setLocation] = useState('')
+ 
   return (
     <div className="CarsDash">
       <Routes>
-          <Route path="/" element={<CitySelect setLocation={setLocation} />}/>
-          <Route path="Cars" element={<Cars Location={Location} />} />
+          <Route path="/" element={<CitySelect />}/>
+          <Route path="Cars" element={<Cars />} />
+          <Route path="CarView" element={<CarView />} />
+          <Route path="PaymentGateway" element={<PaymentGateway />} />
       </Routes>
     </div>
   )

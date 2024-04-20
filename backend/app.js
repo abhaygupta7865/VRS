@@ -128,13 +128,13 @@ app.post('/verify', (req, res) => {
 
 // An endpoint to see if there's an existing account for a given email address
 app.post('/check-account', async (req, res) => {
-  const { email } = req.body;
+  const {email} = req.body;
 
   try {
     const { rows } = await pool.query('SELECT customer_email FROM customer WHERE customer_email = $1', [email]);
     
     const userExists = rows.length === 1;
-
+   
     res.status(200).json({
       status: userExists ? 'User exists' : 'User does not exist',
       userExists,
