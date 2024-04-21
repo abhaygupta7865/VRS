@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import VehiclePng from '../../assets/RentalVehicle.png';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { setLoggedIn, setEmail } from '../../Store';
+import { setLoggedIn, setEmail, setUserDetails } from '../../Store';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPasswordState] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
 
   const navigate = useNavigate();
 
@@ -71,6 +72,16 @@ const Login = () => {
       .then((r) => {
         if ("success" === r.message) {
           localStorage.setItem("user", JSON.stringify({ email, token: r.token }));
+          
+          // Dispatch setUserDetails with user details and token
+          dispatch(setUserDetails({
+            customer_id: r.userDetails.customer_id,
+            customer_name: r.userDetails.customer_name,
+            customer_email: r.userDetails.customer_email,
+            customer_mobile_number: r.userDetails.customer_mobile_number,
+            token: r.token,
+          }));
+          
           dispatch(setLoggedIn(true));
           dispatch(setEmail(email));
           navigate("/");

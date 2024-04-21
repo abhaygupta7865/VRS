@@ -96,82 +96,89 @@ function RegisterUser() {
           <div className="flex flex-col mb-4 w-full items-center mt-7">
             {/* <h1 className="text-3xl font-bold mb-8">Register</h1> */}
             <form onSubmit={handleSubmit}>
+
                 <div className='flex justify-between'>
-                <label htmlFor="customer_name" className="block text-sm font-medium mb-2 p-4">
-                  Name
-                </label>
-                <div className='p-2'>
-                <input
-                  type="text"
-                  id="customer_name"
-                  name="customer_name"
-                  className={`justify- w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_name ? 'border-red-500' : ''
-                    }`}
-                  value={formData.customer_name}
-                  onChange={handleChange}
-                />
-                </div>
-                {formData.errors.customer_name && (
-                  <span className="text-red-500 text-xs mt-1">{formData.errors.customer_name}</span>
-                )}
+                    <label htmlFor="customer_name" className="block text-sm font-medium mb-2 p-4">
+                      Name
+                    </label>
+                    
+                    <div className='p-2'>
+                    <input
+                      type="text"
+                      id="customer_name"
+                      name="customer_name"
+                      className={`justify- w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_name ? 'border-red-500' : ''
+                        }`}
+                      value={formData.customer_name}
+                      onChange={handleChange}
+                    />
+                    </div>
+
+                    {formData.errors.customer_name && (
+                      <span className="text-red-500 text-xs mt-1">{formData.errors.customer_name}</span>
+                    )}
               </div>
               <div className="flex justify-between">
-                <label htmlFor="customer_email" className="block text-sm font-medium mb-2 p-4">
-                  Email
-                </label>
-                <div className='p-2'>
-                <input
-                  type="email"
-                  id="customer_email"
-                  name="customer_email"
-                  className={`w-52 px-3 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_email ? 'border-red-500' : ''
-                    }`}
-                  value={formData.customer_email}
-                  onChange={handleChange}
-                />
-                </div>
-                {formData.errors.customer_email && (
-                  <span className="text-red-500 text-xs mt-1">{formData.errors.customer_email}</span>
-                )}
+                    <label htmlFor="customer_email" className="block text-sm font-medium mb-2 p-4">
+                      Email
+                    </label>
+
+                    <div className='p-2'>
+                    <input
+                      type="email"
+                      id="customer_email"
+                      name="customer_email"
+                      className={`w-52 px-3 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_email ? 'border-red-500' : ''
+                        }`}
+                      value={formData.customer_email}
+                      onChange={handleChange}
+                    />
+                    </div>
+
+                    {formData.errors.customer_email && (
+                      <span className="text-red-500 text-xs mt-1">{formData.errors.customer_email}</span>
+                    )}
               </div>
               <div className="flex justify-between">
-                <label htmlFor="customer_password" className="block text-sm font-medium mb-2 p-4">
-                  Password
-                </label>
-                <div className='p-2'>
-                <input
-                  type="password"
-                  id="customer_password"
-                  name="customer_password"
-                  className={`w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_password ? 'border-red-500' : ''
-                    }`}
-                  value={formData.customer_password}
-                  onChange={handleChange}
-                />
-                </div>
-                {formData.errors.customer_password && (
-                  <span className="text-red-500 text-xs mt-1">{formData.errors.customer_password}</span>
-                )}
+                    <label htmlFor="customer_password" className="block text-sm font-medium mb-2 p-4">
+                      Password
+                    </label>
+
+                    <div className='p-2'>
+                    <input
+                      type="password"
+                      id="customer_password"
+                      name="customer_password"
+                      className={`w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_password ? 'border-red-500' : ''
+                        }`}
+                      value={formData.customer_password}
+                      onChange={handleChange}
+                    />
+                    </div>
+
+                    {formData.errors.customer_password && (
+                      <span className="text-red-500 text-xs mt-1">{formData.errors.customer_password}</span>
+                    )}
               </div>
               {/* New fields for mobileNumber and dateOfBirth */}
               <div className="flex justify-between">
-                <label htmlFor="customer_mobile_number" className="block text-sm font-medium mb-2 p-4">
-                  Mobile Number
-                </label>
-                <div className='p-2'>
-                <input
-                  type="number"
-                  id="customer_mobile_number"
-                  name="customer_mobile_number"
-                  className={`w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_mobile_number ? 'border-red-500' : ''
-                    }`}
-                  value={formData.customer_mobile_number}
-                  onChange={handleChange}
-                />
-                </div>
-                {formData.errors.customer_mobile_number && (
-                  <span className="text-red-500 text-xs mt-1">{formData.errors.customer_mobile_number}</span>
-                )}
+                    <label htmlFor="customer_mobile_number" className="block text-sm font-medium mb-2 p-4">
+                      Mobile Number
+                    </label>
+                    <div className='p-2'>
+                    <input
+                      type="number"
+                      id="customer_mobile_number"
+                      name="customer_mobile_number"
+                      className={`w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_mobile_number ? 'border-red-500' : ''
+                        }`}
+                      value={formData.customer_mobile_number}
+                      onChange={handleChange}
+                    />
+                    </div>
+                    {formData.errors.customer_mobile_number && (
+                      <span className="text-red-500 text-xs mt-1">{formData.errors.customer_mobile_number}</span>
+                    )}
               </div>
               <div className="flex justify-between">
                 <label htmlFor="customer_date_of_birth" className="block text-sm font-medium mb-2 p-4">
@@ -182,8 +189,7 @@ function RegisterUser() {
                   type="date"
                   id="customer_date_of_birth"
                   name="customer_date_of_birth"
-                  className={`w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_date_of_birth ? 'border-red-500' : ''
-                    }`}
+                  className={`w-52 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${formData.errors.customer_date_of_birth ? 'border-red-500' : ''}`}
                   value={formData.customer_date_of_birth}
                   onChange={handleChange}
                 />

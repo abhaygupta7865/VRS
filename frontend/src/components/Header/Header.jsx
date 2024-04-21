@@ -2,6 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
+
 const Header_components = [
   {
     id: "1",
@@ -18,15 +19,14 @@ const Header_components = [
     name: "ABOUT",
     link: "/About",
   },
- 
 ];
+
 const Header = () => {
-  const loggedIn = useSelector((state) => state.loggedIn); 
+  const loggedIn = useSelector((state) => state.loggedIn);
+  const email = useSelector((state) => state.email);
+
   return (
-    <nav
-      className="shadow-md bg-white
-  dark:bg-dark dark:text-white sticky"
-    >
+    <nav className="shadow-md bg-white dark:bg-dark dark:text-white sticky">
       <div className="container">
         <div className="flex justify-between items-center">
           <div>
@@ -38,8 +38,7 @@ const Header = () => {
           </div>
           <div className="hidden md:block">
             <ul className="flex items-center gap-8">
-              {
-              Header_components.map((data) => (
+              {Header_components.map((data) => (
                 <li key={data.id} className="py-4">
                   <NavLink
                     to={data.link}
@@ -48,10 +47,8 @@ const Header = () => {
                     {data.name}
                   </NavLink>
                 </li>
-              ))
-              }
-              {
-              loggedIn && ( // Render BOOKING link only if loggedIn is true
+              ))}
+              {loggedIn && (
                 <li className="py-4">
                   <NavLink
                     to="/MyTrip"
@@ -65,20 +62,29 @@ const Header = () => {
           </div>
 
           <div className="flex items-center lg:order-2">
+            {email ? (
+              <NavLink
+                to="/Account"
+                className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+              >
+                Account
+              </NavLink>
+            ) : (
+              <Link
+                to="/RegisterUser"
+                className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+              >
+                Register
+              </Link>
+            )}
+
             <NavLink
               to="/Register_Login"
               className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
             >
               Log in
             </NavLink>
-            <Link
-              to="/RegisterUser"
-              className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-            >
-              Register
-            </Link>
           </div>
-
         </div>
       </div>
     </nav>

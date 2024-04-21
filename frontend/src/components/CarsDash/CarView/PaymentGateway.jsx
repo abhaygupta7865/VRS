@@ -3,22 +3,57 @@ import { useForm } from 'react-hook-form';
 import { AiOutlineCreditCard } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const PaymentGateway = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const carData= useSelector(state=> state.carData)
-  const Location = useSelector(state => state.location); 
-  const Datestate = useSelector(state => state.dateState); 
-  const Timevalue = useSelector(state => state.timeValue);
+  const carData = useSelector(state => state.carData);
+  const Location = useSelector(state => state.location);
+  const dateState = useSelector(state => state.dateState);
+  const timeValue = useSelector(state => state.timeValue);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
 
-  const navigate=useNavigate();
+  // const calculateTotalPrice = (rent, startTime, endTime) => {
+  //   const start = new Date(`1970-01-01T${startTime}:00`).getHours();
+  //   const end = new Date(`1970-01-01T${endTime}:00`).getHours();
+  //   const hours = end - start;
+  //   return rent * hours;
+  // };
+  const startTime = timeValue[0].split('T')[1].split('.')[0]; // Extracting startTime
+  const endTime = timeValue[1].split('T')[1].split('.')[0];
 
+  const onSubmit = async (data) => {
+    try {
+      const bookingData = {
+        vehicle_id: carData.vehicle_id,
+        customer_email: user.email,
+        booking_start_date: dateState[0].startDate,
+        booking_end_date: dateState[0].endDate,
+        booking_date: new Date().toISOString(),
+        booking_status: 'booked',
+        total_price: carData.vehicle_rent,
+        payment_status: 'success',
+        payment_method: 'card',
+        created_at: new Date().toISOString(),
+        booking_start_time: timeValue[0],
+        booking_end_time: timeValue[1],
+        booking_location: Location,
+      };
 
-  const onSubmit = (data) => {
-    navigate("/MyTrip")
-    console.log(data);
-    // Here, you can add the logic to process the payment
+      const response = await axios.post('http://localhost:3080/api/bookings', bookingData);
+
+      if (response.status === 200) {
+        navigate("/MyTrip");
+        console.log("Booking successful", response.data);
+      } else {
+        console.log("Booking failed", response.data);
+      }
+    } catch (error) {
+      console.error("Error booking", error);
+    }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

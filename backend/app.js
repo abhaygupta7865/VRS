@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import pg from 'pg';
+// import { DateTime } from 'luxon';
 
 
 const app = express();
@@ -72,7 +73,7 @@ app.post('/auth', async (req, res) => {
 
   try {
     // Look up the user entry in the database
-    const { rows } = await pool.query('SELECT customer_email,customer_password FROM customer WHERE customer_email = $1', [email]);
+    const { rows } = await pool.query('SELECT customer_id, customer_name, customer_email, customer_mobile_number, customer_password FROM customer WHERE customer_email = $1', [email]);
     const user = rows[0];
 
     // If found, compare the hashed passwords and generate the JWT token for the user
@@ -87,10 +88,19 @@ app.post('/auth', async (req, res) => {
           };
 
           const token = jwt.sign(loginData, jwtSecretKey);
-          res.status(200).json({ message: 'success', token });
+          res.status(200).json({
+            message: 'success',
+            token,
+            userDetails: {
+              customer_id: user.customer_id,
+              customer_name: user.customer_name,
+              customer_email: user.customer_email,
+              customer_mobile_number: user.customer_mobile_number,
+            },
+          });
         }
-      });}
-    else{
+      });
+    } else {
       return res.status(401).json({ message: 'no user found' });
     }
   } catch (error) {
@@ -98,6 +108,7 @@ app.post('/auth', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 
 
@@ -159,6 +170,95 @@ app.post('/api/vehicles', async (req, res) => {
     res.status(500).send('Error fetching vehicles');
   }
 })
+
+
+// API endpoint to update booking details
+app.post('/api/bookings', async (req, res) => {
+  try {
+    const {
+      vehicle_id,
+      customer_email,
+      booking_start_date,
+      booking_end_date,
+      booking_date,
+      booking_status,
+      total_price,
+      payment_status,
+      payment_method,
+      created_at,
+      booking_start_time,
+      booking_end_time,
+      booking_location,
+    } = req.body;
+
+    const addTime = (time) => {
+      const [hours, minutes] = time.split(':').map(Number);
+      const date = new Date(0, 0, 0, hours, minutes);
+      date.setMinutes(date.getMinutes() + 330); // Adding 330 minutes (5 hours 30 minutes)
+      return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    };
+
+    const updatedBookingStartTime = addTime(booking_start_time);
+    const updatedBookingEndTime = addTime(booking_end_time);
+
+    const combineDateTime = (date, time) => {
+      const [hours, minutes, seconds] = time.split(':').map(Number);
+      const [year, month, day] = date.split('-').map(Number);
+      return new Date(year, month - 1, day, hours, minutes, seconds);
+    };
+
+    const bookingStartTimeStamp = combineDateTime(booking_start_date, updatedBookingStartTime);
+    const bookingEndTimeStamp = combineDateTime(booking_end_date, updatedBookingEndTime);
+    
+    
+    const query = `
+      INSERT INTO bookings (
+        vehicle_id,
+        customer_email,
+        booking_start_date,
+        booking_end_date,
+        booking_date,
+        booking_status,
+        total_price,
+        payment_status,
+        payment_method,
+        created_at,
+        booking_start_time,
+        booking_end_time,
+        booking_location,
+        starting_time, 
+        end_time
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+      )
+    `;
+
+    const values = [
+      vehicle_id,
+      customer_email,
+      booking_start_date,
+      booking_end_date,
+      booking_date,
+      booking_status,
+      total_price,
+      payment_status,
+      payment_method,
+      created_at,
+      updatedBookingStartTime,
+      updatedBookingEndTime,
+      booking_location,
+      bookingStartTimeStamp,
+      bookingEndTimeStamp
+    ];
+
+    await pool.query(query, values);
+
+    res.status(200).json({ message: 'Booking stored successfully' });
+  } catch (error) {
+    console.error('Error storing booking:', error);
+    res.status(500).json({ message: 'Error storing booking' });
+  }
+});
 
 
 

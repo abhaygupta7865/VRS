@@ -1,4 +1,3 @@
-// store.js
 import { configureStore } from '@reduxjs/toolkit';
 import {thunk} from 'redux-thunk';
 
@@ -6,116 +5,74 @@ import {thunk} from 'redux-thunk';
 const initialState = {
   loggedIn: false,
   email: '',
+  // userDetails: null,
 };
 
 // Actions
-  export const setLoggedIn = (isLoggedIn) => {
-      return (dispatch) => {
-        dispatch({
-          type: 'SET_LOGGED_IN',
-          payload: isLoggedIn,
-        });
-      };
-    };
-  
-  export const setEmail = (email) => {
-    return (dispatch) => {
-      dispatch({
-        type: 'SET_EMAIL',
-        payload: email,
-      });
-    };
-  };
-  
-  export const setDateState = (dateState) => {
-    // Convert dateState to a serializable format
-    const serializedDateState = dateState.map(item => {
-      const startDate = item.startDate ? item.startDate.toISOString() : null;
-      const endDate = item.endDate ? item.endDate.toISOString() : null;
-  
-      return {
-        ...item,
-        startDate,
-        endDate,
-      };
-    });
-  
-    return (dispatch) => {
-      dispatch({
-        type: 'SET_DATE_STATE',
-        payload: serializedDateState,
-      });
-    };
-  };
-  
-  
-  export const setTimeValue = (timeValue) => {
-    // Convert timeValue to a serializable format
-    const serializedTimeValue = timeValue ? {
-      start: timeValue[0] ? timeValue[0].toISOString() : null,
-      end: timeValue[1] ? timeValue[1].toISOString() : null,
-    } : null;
-  
-    return (dispatch) => {
-      dispatch({
-        type: 'SET_TIME_VALUE',
-        payload: serializedTimeValue,
-      });
-    };
-  };
-  
+export const setLoggedIn = (isLoggedIn) => (dispatch) => {
+  dispatch({
+    type: 'SET_LOGGED_IN',
+    payload: isLoggedIn,
+  });
+};
 
-  export const setLocation = (location) => {
-    return (dispatch) => {
-      dispatch({
-        type: 'SET_LOCATION',
-        payload: location,
-      });
-    };
-  };
+export const setEmail = (email) => (dispatch) => {
+  dispatch({
+    type: 'SET_EMAIL',
+    payload: email,
+  });
+};
 
-  export const setCarData = (carData) => {
-    return (dispatch) => {
-      dispatch({
-        type: 'SET_CAR_DATA',
-        payload: carData,
-      });
-    };
-  };
+export const setUserDetails = (userDetails) => ({
+  type: 'SET_USER_DETAILS',
+  payload: userDetails,
+});
+
+export const setDateState = (dateState) => (dispatch) => {
+  dispatch({
+    type: 'SET_DATE_STATE',
+    payload: dateState,
+  });
+};
+
+export const setTimeValue = (timeValue) => (dispatch) => {
+  dispatch({
+    type: 'SET_TIME_VALUE',
+    payload: timeValue,
+  });
+};
+
+export const setLocation = (location) => (dispatch) => {
+  dispatch({
+    type: 'SET_LOCATION',
+    payload: location,
+  });
+};
+
+export const setCarData = (carData) => (dispatch) => {
+  dispatch({
+    type: 'SET_CAR_DATA',
+    payload: carData,
+  });
+};
 
 // Reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_LOGGED_IN':
-      return {
-        ...state,
-        loggedIn: action.payload,
-      };
+      return { ...state, loggedIn: action.payload };
     case 'SET_EMAIL':
-      return {
-        ...state,
-        email: action.payload,
-      };
+      return { ...state, email: action.payload };
     case 'SET_DATE_STATE':
-      return {
-        ...state,
-        dateState: action.payload,
-      };
+      return { ...state, dateState: action.payload };
     case 'SET_TIME_VALUE':
-      return {
-        ...state,
-        timeValue: action.payload,
-      };
+      return { ...state, timeValue: action.payload };
     case 'SET_LOCATION':
-      return {
-        ...state,
-        location: action.payload,
-      };
+      return { ...state, location: action.payload };
     case 'SET_CAR_DATA':
-      return {
-        ...state,
-        carData: action.payload,
-      };
+      return { ...state, carData: action.payload };
+    case 'SET_USER_DETAILS':
+      return { ...state, userDetails: action.payload};
     default:
       return state;
   }
