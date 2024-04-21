@@ -50,10 +50,10 @@ const MyTrip = () => {
   const navigate = useNavigate();
   return (
     <div className='container m-4'>
-      <div className='h-full min-h-full overflow-auto p-2 bg-gray-200 font-sans '>
+      <div className='h-full min-h-full overflow-auto p-2 font-sans bg-pink-300'>
         <div className='flex justify-between max-w-7xl w-full mx-auto p-4 gap-4'>
           {CustomerDeatils.map((data) => (
-            <div key={data.customerID} className='text-gray-700 rounded-md border border-gray-300 shadow shadow-gray-300 text-sm w-1/4 px-4 py-8 bg-white'>
+            <div key={data.customerID} className='text-black rounded-md border border-pink-300 shadow shadow-pink-300 text-sm w-1/3 px-4 py-8 bg-white'>
               <div className='text-center pb-2 mt-4'>
                 <img src={data.customerProfilePic} alt="" className='w-20 h-20 rounded-full mx-auto mb-2 min-w-20 min-h-20' />
                 <p className='text-capitalize text-lg font-bold m-0'>{data.customerName}</p>
@@ -71,54 +71,56 @@ const MyTrip = () => {
               <hr />
               <ul>
                 <li>
-                  <div className='transition duration-200 ease-in-out bg-gradient-to-r from-white to-yellow-300 flex items-center py-4 border-b border-gray-300 cursor-pointer'>
-                    <div className='bg-yellow-500 w-2 h-2 rounded-full'>
+                  <div className='transition duration-200 ease-in-out bg-gradient-to-r from-white to-pink-500 flex items-center py-4 border-b border-gray-300 cursor-pointer'>
+                    <div className='bg-pink-700 w-2 h-2 rounded-full'>
                     </div>
-                    <a href="" className='ml-6 text-lg text-yellow-500 font-bold'>My MyTrip</a>
+                    <a href="" className='ml-6 text-lg text-gray-9
+                    
+                    00 font-bold'>My MyTrip</a>
                   </div></li>
                 <li>
                   <div className='flex items-center py-4 border-b border-gray-300 cursor-pointer'>
                     <div className='w-2 h-2 rounded-full'></div>
-                    <a href="/" className='ml-6 text-lg text-yellow-500 font-bold'>Saved Card</a>
+                    <a href="/" className='ml-6 text-lg text-gray-900 font-bold'>Saved Card</a>
                   </div>
                 </li>
                 <li>
                   <div className='flex items-center py-4 border-b border-gray-300 cursor-pointer'>
                     <div className='w-2 h-2 rounded-full'></div>
-                    <a href="/" className='ml-6 text-lg text-yellow-500 font-bold'>Account</a>
+                    <a href="/" className='ml-6 text-lg text-pink-700 font-bold'>Account</a>
                   </div>
                 </li>
               </ul>
             </div>
           ))}
           {/* MyTrip Details */}
-          <div className='rounded-md w-3/4 mt-0 p-0 mb-0 bg-white border border-gray-300 shadow shadow-gray-300 text-sm'>
-            <p className='text-center text-uppercase text-3xl border-b border-gray-300 py-4 m-0'>My MyTrip</p>
+          <div className='rounded-md w-3/4 mt-0 p-0 mb-0 bg-white border border-pink-300 shadow shadow-pink-300 text-sm'>
+            <p className='text-center text-uppercase text-3xl border-b border-pink-300 py-4 m-0'>My MyTrip</p>
             <div className='h-screen min-h-screen overflow-y-auto'>
               <div className='text-sm font-sans antialiased'>
                 <div className='text-center'>
                   <div className='h-screen min-h-screen overflow-y-auto'>
                     <div className='text-center'>
                       {/*Card Container */}
-                      <div className='relative border w-full border-gray-300 rounded-md px-1 py-1 flex flex-col flex-grow'>
+                      <div className='relative border w-full border-pink-300 rounded-md px-1 py-1 flex flex-col flex-grow'>
                         {MyTripDetails.map((data) => (
                           <div className='opacity-0 overflow-hidden hidden absolute h-full w-full top-0 left-0 z-[-10] transition duration-100 ease-out'>
                             <div className='absolute h-full w-full top-0 left-0 opacity-87 bg-black z-10'></div>
                             <div className='px-4 py-4 bg-white absolute w-full bottom-0 opacity-1 transition duration-600 ease-out transform translate-y-full shadow-md'>
-                              <div className='h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-2xl  absolute top-[-2.5rem] right-4'>
+                              <div className='h-8 w-8 rounded-full bg-pink-300 flex items-center justify-center text-2xl  absolute top-[-2.5rem] right-4'>
                                 <i className='text-center text-2xl font-sans antialiased'></i>
                               </div>
                             </div>
                           </div>
                           ,{/*Car Details*/ },
                           <div className='text-base font-sans antialiased text-center'>
-                            <div className='text-sm font-bold tracking-tight leading-4 text-center justify-between items-center  bg-white text-gray-600 antialiased font-sans'>
+                            <div className='text-sm font-bold tracking-tight leading-4 text-center justify-between items-center  bg-white text-pink-700 antialiased font-sans'>
                               <div className='text-sm font-bold tracking-tight text-center text-gray-600 antialiased font-sans'></div>
-                              <div className='text-base m-2 relative border border-gray-300 rounded-md'>
+                              <div className='text-base m-2 relative border border-pink-300 rounded-md'>
                                 <div className='fixed top-0 left-0 h-full w-full opacity-0 overflow-hidden z-[-10] transition duration-100 ease-out'>
                                 </div>
                                 <div className='card' key={data.MyTripId}>
-                                  <div className='flex justify-between p-2 bg-gray-200 text-gray-600 text-sm font-bold tracking-tight'>
+                                  <div className='flex justify-between p-2 bg-pink-200 text-pink-600 text-sm font-bold tracking-tight'>
                                     <div className='status'>{data.tripStatus} TRIP</div>
                                     <div className='id'>ID: {data.MyTripId}</div>
                                     <div className='invoice'><a href="\">Invoice</a></div>
@@ -130,8 +132,8 @@ const MyTrip = () => {
                                         <div className='overflow-clip border-0'>
                                           <img src={data.image} alt="" className='w-full' />
                                         </div>
-                                        <div className='my-2 text-gray-600 text-md leading-tight font-bold'>{data.name}</div>
-                                        <div className='text-gray-900 font-bold text-md'>{data.registerNo}</div>
+                                        <div className='my-2 text-pink-700 text-md leading-tight font-bold'>{data.name}</div>
+                                        <div className='text-pink-700 font-bold text-md'>{data.registerNo}</div>
                                       </div>
                                       {/* Journey Section */}
                                       <div className='w-full px-4 py-4 relative flex-1'>

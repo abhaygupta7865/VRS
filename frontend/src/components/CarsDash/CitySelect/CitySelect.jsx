@@ -94,6 +94,13 @@ const CitySelect = () => {
               </div>
               </div>
 
+        <TimePicker.RangePicker 
+          format="HH:MM"
+          onChange={onChange}
+          value={timevalue}
+          activeBg='#C2185B'
+        />
+
               <div className='text-center text-lg font-medium py-2 px-4 rounded-full bg-pink-700 text-black hover:bg-pink-900'>
               <TimePicker.RangePicker
                 format="HH:MM"

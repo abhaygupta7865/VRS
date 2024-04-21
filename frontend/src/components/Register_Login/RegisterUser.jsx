@@ -93,7 +93,7 @@ function RegisterUser() {
         </div>
         <div className="space-y-4">
           {/* <h1 className="flex flex-col text-3xl font-bold mb-4 w-full items-center">Login</h1> */}
-          <div className="flex flex-col mb-4 w-full items-center mt-7">
+          <div className="flex flex-col p-4 w-full items-center">
             {/* <h1 className="text-3xl font-bold mb-8">Register</h1> */}
             <form onSubmit={handleSubmit}>
                 <div className='flex justify-between'>
@@ -195,7 +195,7 @@ function RegisterUser() {
               <div className='flex justify-center'>
               <button
                 type="submit"
-                className="inline-flex items-center px-4 py-2 bg-pink-700 hover:bg-pink-900 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-900 w-52"
+                className="px-4 py-2 bg-pink-700 hover:bg-pink-900 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-900 w-52"
               >
                 Register
               </button>

@@ -1,4 +1,5 @@
 import React from "react";
+import { CgProfile } from "react-icons/cg";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
@@ -18,7 +19,7 @@ const Header_components = [
     name: "ABOUT",
     link: "/About",
   },
- 
+  
 ];
 const Header = () => {
   const loggedIn = useSelector((state) => state.loggedIn); 
@@ -73,12 +74,18 @@ const Header = () => {
             </NavLink>
             <Link
               to="/RegisterUser"
-              className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+              className="text-white bg-pink-700 hover:bg-pink-900 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
             >
               Register
             </Link>
           </div>
-
+              <div className="rounded font-sans text-normal antialiased text-black list-none font-bold text-lg flex items-center">
+                <NavLink
+                to="/Account"
+                >Account
+                </NavLink>
+                <CgProfile  className="text-xl ml-2"/>
+                </div>
         </div>
       </div>
     </nav>
