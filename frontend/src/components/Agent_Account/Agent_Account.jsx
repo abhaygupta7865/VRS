@@ -24,10 +24,9 @@ const AgentDashboard = () => {
   console.log(vehicleDetails)
   return (
     <div className='container mt-4'>
-      <div className='h-full min-h-full overflow-auto p-2 font-sans bg-pink-300 border-gray-700'>
+      <div className='h-full min-h-full overflow-auto font-sans bg-white border-gray-700'>
         <div className='flex justify-between max-w-7xl w-full mx-auto p-4 gap-4'>
-         
-            <div key={agentDetails.customer_id} className=' rounded-md border border-gray-700 shadow shadow-pink-200 text-sm w-1/3 px-4 py-8 bg-white'>
+            <div key={agentDetails.customer_id} className=' rounded-md border border-yellow-500 shadow-xl shadow-black text-sm w-1/3 px-4 py-8 bg-white'>
               <div className='text-center pb-2 mt-4 text-black'>
                 <img src={agentDetails.profile_image} alt="" className='w-20 h-20 rounded-full mx-auto mb-2 min-w-20 min-h-20' />
                 <p className='text-capitalize text-lg font-bold m-0'>{agentDetails.customer_name}</p>
@@ -46,15 +45,15 @@ const AgentDashboard = () => {
             </div>
         
           {/* Account Section*/}
-          <div className='rounded-md w-3/4 mt-0 p-0 mb-0 bg-white border border-gray-700 shadow shadow-pink-300 text-sm'>
-            <p className='text-center rounded text-uppercase text-3xl border-gray-700 py-4 text-white bg-pink-700'>My Car</p>
+          <div className='rounded-lg w-3/4 mt-0 p-0 mb-0 bg-white border border-yellow-500 shadow-xl shadow-black text-sm'>
+            <p className='text-center rounded-lg text-uppercase text-3xl border-yellow-500 py-4 text-white bg-yellow-500 font-bold'>My Cars</p>
             <div className='h-screen min-h-screen overflow-y-auto'>
               <div className='text-sm font-sans antialiased'>
                 <div className='text-center'>
                   <div className='h-screen min-h-screen overflow-y-auto'>
                     <div className='text-center'>
                       {/*Card Container */}
-                      <div className='relative border w-full border-gray-300 rounded-md px-1 py-1 flex flex-col flex-grow'>
+                      <div className='relative border w-full border-yellow-500 rounded-md px-1 py-1 flex flex-col flex-grow'>
                         {vehicleDetails.map((data) => (
                           <div className='opacity-0 overflow-hidden hidden absolute h-full w-full top-0 left-0 z-[-10] transition duration-100 ease-out'>
                             <div className='absolute h-full w-full top-0 left-0 opacity-87 bg-black z-10'></div>
@@ -76,7 +75,7 @@ const AgentDashboard = () => {
                                     <div className='status m-2 text-black'>{data.vehicle_status}</div>
                                     <div className='id m-2 text-black'>ID: {data.vehicle_id}</div>
                                     <div className='invoice'>
-                                      <button className="rounded bg-pink-700 p-2 text-white">
+                                      <button className="rounded bg-yellow-500 p-2 text-white">
                                         Update
                                       </button>
                                     </div>
@@ -88,23 +87,9 @@ const AgentDashboard = () => {
                                       <div className='overflow-clip border-0'>
                                         <img src={data.vehicle_image} alt="" className='w-full' />
                                       </div>
-                                      <div className='my-2 text-pink-700 text-md leading-tight font-bold'>{data.vehicle_name}</div>
-                                      <div className='text-pink-700 font-bold text-md'>{data.vehicle_license_Plate}</div>
+                                      <div className='my-2 text-yellow-700 text-md leading-tight font-bold'>{data.vehicle_name}</div>
+                                      <div className='text-yellow-700 font-bold text-md'>{data.vehicle_license_Plate}</div>
                                     </div>
-                                    {/* Journey Section */}
-                                    {/* <div className='w-full px-4 py-4 relative flex-1'>
-                                        <div className='flex justify-between'>
-                                          <div className='start'>
-                                            <b>START</b>: {data.DateofStartTrip}, {data.startTime}
-                                          </div>
-                                          <div class='divider'></div>
-                                          <div className='end'><b>END</b>: {data.DateofEndTrip}, {data.endTime}</div>
-                                        </div>
-                                        <div className='max-w-full overflow-hidden flex flex-row text-left pt-4'>
-                                        <span><TfiLocationPin className='text-lime-500 text-xl'/></span>
-                                        {data.location}
-                                        </div>
-                                      </div> */}
                                     <div className="w-full px-4 py-4 relative flex-1">
                                       <div className="text-sm text-gray-700 text-left">
                                         <div className="company_Name"><b>Company Name :</b> {data.vehicle_model}</div>
@@ -117,7 +102,7 @@ const AgentDashboard = () => {
                                         </div>
                                       </div>
                                       <div className="flex justify-between">
-                                        <div className="text-sm text-pink-700">{data.vehicle_location}, {data.vehicle_city}, {data.vehicle_state}</div>
+                                        <div className="text-sm text-yellow-500">{data.vehicle_location}, {data.vehicle_city}, {data.vehicle_state}</div>
                                       </div>
                                     </div>
                                   </div>
@@ -127,7 +112,7 @@ const AgentDashboard = () => {
                           </div>
                         ))}
                         <div className="flex justify-center m-4">
-                          <button className="rounded-xl bg-pink-700 text-white p-2 w-40 text-xl hover:bg-pink-900">Add Vehicle</button>
+                          <button className="rounded-xl bg-yellow-500 text-white p-2 w-40 text-xl hover:bg-yellow-300">Add Vehicle</button>
                         </div>
                       </div>
                     </div>
