@@ -27,18 +27,18 @@ const MyTrip = () => {
 
 
   return (
-    <div className='container m-4'>
-      <div className='h-full min-h-full overflow-auto p-2 font-sans bg-pink-300'>
+    <div className='container mt-6'>
+      <div className='h-full min-h-full overflow-auto font-sans bg-white'>
         <div className='flex justify-between max-w-7xl w-full mx-auto p-4 gap-4'>
           {/* Customer Details */}
-          <div className='text-gray-700 rounded-md border border-gray-300 shadow shadow-gray-300 text-sm w-1/4 px-4 py-8 bg-white'>
+          <div className='text-gray-700 rounded-lg border border-yellow-500 shadow-xl shadow-black text-sm w-1/4 px-4 py-8 bg-white'>
             <div className='text-center pb-2 mt-4'>
-              {/* <img src={userDetails.profile_image} alt="" className='w-20 h-20 rounded-full mx-auto mb-2 min-w-20 min-h-20' /> */}
-              {/* <p className='text-capitalize text-lg font-bold m-0'>{userDetails.customer_name}</p> */}
-              {/* <p className='text-sm mb-2 mt-0 mx-0'>+91{userDetails.customer_mobile_number}</p> */}
-              {/* <p className='text-sm mb-2'>{userDetails.customer_email}</p> */}
+              <img src={userDetails.profile_image} alt="" className='w-20 h-20 rounded-full mx-auto mb-2 min-w-20 min-h-20' />
+              <p className='text-capitalize text-lg font-bold m-0'>{userDetails.customer_name}</p>
+              <p className='text-sm mb-2 mt-0 mx-0'>+91{userDetails.customer_mobile_number}</p>
+              <p className='text-sm mb-2'>{userDetails.customer_email}</p>
             </div>
-            <ul className='block p-2 m-0'>
+            <ul className='block m-0'>
               <hr />
               <li className='text-normal text-lg p-2 flex'>
                 <div className='m-2'><FaCheckCircle className='text-lime-600' /></div>Profile Document</li>
@@ -70,8 +70,8 @@ const MyTrip = () => {
           </div>
           
           {/* MyTrip Details */}
-          <div className='rounded-md w-3/4 mt-0 p-0 mb-0 bg-white border border-pink-300 shadow shadow-pink-300 text-sm'>
-            <p className='text-center text-uppercase text-3xl border-b border-pink-300 py-4 m-0'>My MyTrip</p>
+          <div className='rounded-xl w-3/4 mt-0 p-0 mb-0 bg-white border border-yellow-500 shadow-lg shadow-black text-sm'>
+            <p className='rounded-xl text-center text-uppercase text-3xl border-b border-yellow-500 bg-yellow-500 py-4 m-0 font-bold text-white'>Bookings</p>
             <div className='h-screen min-h-screen overflow-y-auto'>
               <div className='text-sm font-sans antialiased'>
                 <div className='text-center'>
