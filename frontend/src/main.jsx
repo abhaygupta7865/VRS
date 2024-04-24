@@ -15,7 +15,8 @@ import Register_Login from "./components/Register_Login/Register_Login.jsx";
 import CarsDash from "./components/CarsDash/CarsDash.jsx";
 import RegisterUser from "./components/Register_Login/RegisterUser.jsx";
 import MyTrip from "./components/MyTrip/MyTrip.jsx";
-import Account from "./components/Account/Account.jsx"
+import Customer_Account from "./components/Customer_Account/Customer_Account.jsx"
+import Agent_Account from "./components/Agent_Account/Agent_Account.jsx"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +30,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/RegisterUser" element={<RegisterUser/>} />
       <Route path="/MyTrip" element={<MyTrip/>} />
-      <Route path="/Account" element={<Account/>}/>
+      <Route path="/Customer_Account" element={<Customer_Account/>}/>
+      <Route path="/Agent_Account" element={<Agent_Account/>}/>
     </Route>
   )
 );

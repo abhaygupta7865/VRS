@@ -5,7 +5,9 @@ import {thunk} from 'redux-thunk';
 const initialState = {
   loggedIn: false,
   email: '',
-  // userDetails: null,
+  bookingStartTimeStamp: null,
+  bookingEndTimeStamp: null,
+  
 };
 
 // Actions
@@ -56,6 +58,22 @@ export const setCarData = (carData) => (dispatch) => {
   });
 };
 
+export const setBookingStartTimeStamp = (bookingStartTimeStamp) => (dispatch) => {
+  dispatch({
+    type: 'SET_BOOKING_START_TIME_STAMP',
+    payload: bookingStartTimeStamp,
+  });
+};
+
+export const setBookingEndTimeStamp = (bookingEndTimeStamp) => (dispatch) => {
+  dispatch({
+    type: 'SET_BOOKING_END_TIME_STAMP',
+    payload: bookingEndTimeStamp,
+  });
+};
+
+
+
 // Reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -73,6 +91,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, carData: action.payload };
     case 'SET_USER_DETAILS':
       return { ...state, userDetails: action.payload};
+    case 'SET_BOOKING_START_TIME_STAMP':
+      return { ...state, bookingStartTimeStamp: action.payload,};
+    case 'SET_BOOKING_END_TIME_STAMP':
+      return { ...state, bookingEndTimeStamp: action.payload,};
     default:
       return state;
   }

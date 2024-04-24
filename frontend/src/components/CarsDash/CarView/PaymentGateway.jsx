@@ -11,6 +11,10 @@ const PaymentGateway = () => {
   const Location = useSelector(state => state.location);
   const dateState = useSelector(state => state.dateState);
   const timeValue = useSelector(state => state.timeValue);
+  const startTimeStamp = useSelector((state) => state.startTimeStamp)
+  const endTimeStamp = useSelector((state) => state.endTimeStamp)
+
+
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
@@ -22,6 +26,17 @@ const PaymentGateway = () => {
   // };
   const startTime = timeValue[0].split('T')[1].split('.')[0]; // Extracting startTime
   const endTime = timeValue[1].split('T')[1].split('.')[0];
+  
+  const addTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const date = new Date(0, 0, 0, hours, minutes);
+    date.setMinutes(date.getMinutes() + 330); // Adding 330 minutes (5 hours 30 minutes)
+    return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+  };
+
+  const updatedBookingStartTime = addTime(startTime);
+  const updatedBookingEndTime = addTime(endTime);
+
 
   const onSubmit = async (data) => {
     try {
@@ -31,14 +46,16 @@ const PaymentGateway = () => {
         booking_start_date: dateState[0].startDate,
         booking_end_date: dateState[0].endDate,
         booking_date: new Date().toISOString(),
-        booking_status: 'booked',
+        booking_status: 'upcoming',
         total_price: carData.vehicle_rent,
         payment_status: 'success',
         payment_method: 'card',
         created_at: new Date().toISOString(),
-        booking_start_time: timeValue[0],
-        booking_end_time: timeValue[1],
+        booking_start_time: updatedBookingStartTime,
+        booking_end_time: updatedBookingEndTime,
         booking_location: Location,
+        starting_time: startTimeStamp,
+        end_time: endTimeStamp
       };
 
       const response = await axios.post('http://localhost:3080/api/bookings', bookingData);

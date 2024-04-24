@@ -2,10 +2,10 @@ import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import VehiclePng from '../../assets/RentalVehicle.png';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
-import { setLoggedIn, setEmail } from '../../Store.js'; // Import setEmail action
+import { setLoggedIn, setEmail, setUserDetails } from '../../Store.js'; // Import setEmail action
 
 const LoginHome = () => {
-  const { loggedIn, email } = useSelector((state) => ({
+  const { loggedIn, email} = useSelector((state) => ({
     loggedIn: state.loggedIn,
     email: state.email,
   }), shallowEqual);
@@ -19,6 +19,7 @@ const LoginHome = () => {
   const onButtonClick = () => {
     if (memoizedLoggedIn) {
       localStorage.removeItem("user");
+      dispatch(setUserDetails({ role: null })) // Set role to null on logout
       dispatch(setLoggedIn(false));
       dispatch(setEmail("")); // Set email to empty string on logout
     } else {
@@ -59,4 +60,3 @@ const LoginHome = () => {
 };
 
 export default LoginHome;
-

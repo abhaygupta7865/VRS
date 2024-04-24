@@ -6,6 +6,14 @@ import VehiclePng from '../../assets/RentalVehicle.png';
 
 function RegisterUser() {
   const navigate = useNavigate();
+
+  const [isAgent, setIsAgent] = useState(false);
+  const [imageFile, setImageFile] = useState(null); 
+
+  const handleImageChange = (event) => {
+    setImageFile(event.target.files[0]);
+  };
+
   const [formData, setFormData] = useState({
     customer_name: '',
     customer_email: '',
@@ -26,21 +34,24 @@ function RegisterUser() {
     });
   };
 
+  const handleCheckboxChange = () => {
+    setIsAgent(!isAgent);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const errors = {};
-
+  
     if (!formData.customer_name) {
       errors.customer_name = 'Name is required';
     }
     if (!formData.customer_email) {
       errors.customer_email = 'Email is required';
-    }
-    else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.customer_email)) {
+    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.customer_email)) {
       errors.customer_email = 'Invalid email format';
     }
-
+  
     if (!formData.customer_password) {
       errors.customer_password = 'Password is required';
     } else if (formData.customer_password.length < 7) {
@@ -52,15 +63,20 @@ function RegisterUser() {
     if (!formData.customer_date_of_birth) {
       errors.customer_date_of_birth = 'Date of birth is required';
     }
-
+  
+    if (!imageFile) {
+      errors.profile_image = 'Image is required';
+    }
+  
     if (Object.keys(errors).length > 0) {
       setFormData({ ...formData, errors });
       return;
     }
-
+  
     try {
       const response = await axios.post('http://localhost:3080/check-account', {
-        email: formData.customer_email
+        email: formData.customer_email,
+        role: isAgent ? 'agent' : 'customer', // Send role based on checkbox state
       });
       if (response.data.userExists) {
         setFormData({ ...formData, errors: { ...formData.errors, customer_email: 'User already exists', }, });
@@ -68,19 +84,31 @@ function RegisterUser() {
       }
     } catch (error) {
       console.error('Error checking user existence:', error);
-      // Handle errors appropriately (e.g., display a generic error message)
     }
-
-    // Register user if not found
+  
+    const formDataWithImage = new FormData();
+    formDataWithImage.append('profile_image', imageFile);
+  
+    // Append role to form data
+    formDataWithImage.append('role', isAgent ? 'agent' : 'customer');
+  
+    for (const key in formData) {
+      formDataWithImage.append(key, formData[key]);
+    }
+  
     try {
-      await axios.post('http://localhost:3080/register', formData);
-      console.log('User registered Successfully')
-      navigate('/Register_Login'); // Redirect to success page after registration
+      await axios.post('http://localhost:3080/registerUser', formDataWithImage, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('User registered Successfully');
+      navigate('/Register_Login');
     } catch (error) {
       console.error('Error registering user:', error);
-      // Handle errors appropriately (e.g., display a generic error message)
     }
   };
+  
 
 
   return (
@@ -198,6 +226,36 @@ function RegisterUser() {
                   <span className="text-red-500 text-xs mt-1">{formData.errors.customer_date_of_birth}</span>
                 )}
               </div>
+              <div className="flex justify-between">
+              <label htmlFor="profile_image" className="block text-sm font-medium mb-2 p-4">
+                Profile Image
+              </label>
+              <div className='p-2'>
+                <input
+                  type="file"
+                  id="profile_image"
+                  name="profile_image"
+                  accept="image/*" // Accept only image files
+                  onChange={handleImageChange} // Handle image file selection
+                />
+              </div>
+            </div>
+              <div className="flex justify-between items-center mt-4">
+                <label htmlFor="isAgent" className="block text-sm font-medium mb-2 p-4">
+                  Register as Agent
+                </label>
+                <div className='p-2'>
+                  <input
+                    type="checkbox"
+                    id="isAgent"
+                    name="isAgent"
+                    checked={isAgent}
+                    onChange={handleCheckboxChange}
+                    className="form-checkbox h-5 w-5 text-pink-700"
+                  />
+                </div>
+              </div>
+
               <div className='flex justify-center'>
               <button
                 type="submit"

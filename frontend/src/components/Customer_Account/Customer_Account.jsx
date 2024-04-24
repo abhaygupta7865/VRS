@@ -13,7 +13,7 @@ const Account = () => {
           {userDetails && (
             <div key={userDetails.customer_id} className=' rounded-md border border-pink-200 shadow shadow-pink-200 text-sm w-1/3 px-4 py-8 bg-white'>
               <div className='text-center pb-2 mt-4 text-black'>
-                <img src={userDetails.customerProfilePic} alt="" className='w-20 h-20 rounded-full mx-auto mb-2 min-w-20 min-h-20' />
+                <img src={userDetails.profile_image} alt="" className='w-20 h-20 rounded-full mx-auto mb-2 min-w-20 min-h-20' />
                 <p className='text-capitalize text-lg font-bold m-0'>{userDetails.customer_name}</p>
                 <p className='text-sm mb-2 mt-0 mx-0'>+91{userDetails.customer_mobile_number}</p>
                 <p className='text-sm mb-2'>{userDetails.customer_email}</p>
