@@ -1,16 +1,15 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import VehiclePng from '../../assets/RentalVehicle.png'
+import VehiclePng from '../../assets/RentalVehicle.png';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
-import { setLoggedIn } from '../../Store.js';
+import { setLoggedIn, setEmail, setUserDetails } from '../../Store.js'; // Import setEmail action
 
 const LoginHome = () => {
-  const { loggedIn, email } = useSelector((state) => ({
+  const { loggedIn, email} = useSelector((state) => ({
     loggedIn: state.loggedIn,
     email: state.email,
-  }),
-    shallowEqual
-  );
+  }), shallowEqual);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,10 +17,11 @@ const LoginHome = () => {
   const { loggedIn: memoizedLoggedIn, email: memoizedEmail } = selectorData;
 
   const onButtonClick = () => {
-    // You'll update this function later
     if (memoizedLoggedIn) {
       localStorage.removeItem("user");
+      dispatch(setUserDetails({ role: null })) // Set role to null on logout
       dispatch(setLoggedIn(false));
+      dispatch(setEmail("")); // Set email to empty string on logout
     } else {
       navigate("/Register_Login/Login");
     }
@@ -50,12 +50,12 @@ const LoginHome = () => {
               >
                 {memoizedLoggedIn ? "Log Out" : "Login"}
               </button>
-              {memoizedLoggedIn && <div className="text-gray-600 text-base"> Your email address is {memoizedEmail} </div>}</div>
+              {memoizedLoggedIn && <div className="text-gray-600 text-base"> Your email address is {memoizedEmail} </div>}
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   );
 };
 

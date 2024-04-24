@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import VehiclePng from '../../assets/RentalVehicle.png';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { setLoggedIn, setEmail } from '../../Store';
+import { setLoggedIn, setEmail, setUserDetails } from '../../Store';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPasswordState] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [isAgent, setIsAgent] = useState(false); // Checkbox state
 
   const navigate = useNavigate();
 
@@ -51,13 +52,14 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, role: isAgent ? 'agent' : 'customer' }), // Include role in request body
     })
       .then((r) => r.json())
       .then((r) => {
         callback(r?.userExists);
       });
   };
+  
 
   const logIn = () => {
     fetch("http://localhost:3080/auth", {
@@ -65,12 +67,23 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, role: isAgent ? 'agent' : 'customer' }), // Include role in request body
     })
       .then((r) => r.json())
       .then((r) => {
         if ("success" === r.message) {
           localStorage.setItem("user", JSON.stringify({ email, token: r.token }));
+          
+          dispatch(setUserDetails({
+            customer_id: r.userDetails.user_id,
+            customer_name: r.userDetails.user_name,
+            customer_email: r.userDetails.user_email,
+            customer_mobile_number: r.userDetails.user_mobile_number,
+            profile_image: r.userDetails.user_image,
+            token: r.token,
+            role: isAgent ? 'agent' : 'customer', 
+          }));
+          
           dispatch(setLoggedIn(true));
           dispatch(setEmail(email));
           navigate("/");
@@ -79,6 +92,7 @@ const Login = () => {
         }
       });
   };
+  
 
   return (
     <div className="container">
@@ -89,7 +103,6 @@ const Login = () => {
             <img src={VehiclePng} alt="Vehicle" className="w-full max-h-[300px] object-cover rounded-lg shadow-lg" />
           </div>
           <div className="space-y-4">
-            {/* <h1 className="flex flex-col text-3xl font-bold mb-4 w-full items-center">Login</h1> */}
             <div className="flex flex-col mb-4 w-full items-center mt-7">
               <input
                 value={email}
@@ -104,9 +117,19 @@ const Login = () => {
                 value={password}
                 placeholder="Enter your password here"
                 onChange={(ev) => setPasswordState(ev.target.value)}
+                type="password"
                 className="p-2 rounded-md border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <label className="text-red-500 text-sm">{passwordError}</label>
+            </div>
+            <div className="flex items-center mb-4 w-full">
+              <input
+                type="checkbox"
+                checked={isAgent}
+                onChange={() => setIsAgent(!isAgent)}
+                className="mr-2"
+              />
+              <label className="text-lg">Are you an agent?</label>
             </div>
             <div className="flex flex-col mb-4 w-full items-center">
               <button

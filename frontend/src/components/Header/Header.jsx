@@ -10,24 +10,19 @@ const Header_components = [
     link: "/",
   },
   {
-    id: "2",
-    name: "CARS",
-    link: "/CarsDash",
-  },
-  {
     id: "3",
     name: "ABOUT",
     link: "/About",
   },
-  
 ];
+
 const Header = () => {
-  const loggedIn = useSelector((state) => state.loggedIn); 
+  const loggedIn = useSelector((state) => state.loggedIn);
+  const role = useSelector((state) => state.userDetails?.role);
+  console.log(role);
+
   return (
-    <nav
-      className="shadow-md bg-white
-  dark:bg-dark dark:text-white sticky"
-    >
+    <nav className="shadow-md bg-white dark:bg-dark dark:text-white sticky">
       <div className="container">
         <div className="flex justify-between items-center">
           <div>
@@ -40,19 +35,28 @@ const Header = () => {
           <div className="hidden md:block">
             <ul className="flex items-center gap-8">
               {
-              Header_components.map((data) => (
-                <li key={data.id} className="py-4">
+                Header_components.map((data) => (
+                  <li key={data.id} className="py-4">
+                    <NavLink
+                      to={data.link}
+                      className="py-2 hover:border-b-2 hover:text-primary hover:border-primary transition-colors duration-500 text-lg font-medium"
+                    >
+                      {data.name}
+                    </NavLink>
+                  </li>
+                ))
+              }
+              {(role === 'customer' || !loggedIn) && (
+                <li className="py-4">
                   <NavLink
-                    to={data.link}
+                    to="/CarsDash"
                     className="py-2 hover:border-b-2 hover:text-primary hover:border-primary transition-colors duration-500 text-lg font-medium"
                   >
-                    {data.name}
+                    CARS
                   </NavLink>
                 </li>
-              ))
-              }
-              {
-              loggedIn && ( // Render BOOKING link only if loggedIn is true
+              )}
+              {role === 'customer' && loggedIn && (
                 <li className="py-4">
                   <NavLink
                     to="/MyTrip"
@@ -62,30 +66,43 @@ const Header = () => {
                   </NavLink>
                 </li>
               )}
+              {role === 'agent' && loggedIn && (
+                <li className="py-4">
+                  <NavLink
+                    to="/CarBookingHistory"
+                    className="py-2 hover:border-b-2 hover:text-primary hover:border-primary transition-colors duration-500 text-lg font-medium"
+                  >
+                    MY CAR BOOKING
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
 
           <div className="flex items-center lg:order-2">
+            {loggedIn ? (
+              <NavLink
+                to={role === 'customer' ? "/Customer_Account" : "/Agent_Account"}
+                className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+              >
+                Account
+              </NavLink>
+            ) : (
+              <Link
+                to="/RegisterUser"
+                className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+              >
+                Register
+              </Link>
+            )}
+
             <NavLink
               to="/Register_Login"
               className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
             >
               Log in
             </NavLink>
-            <Link
-              to="/RegisterUser"
-              className="text-white bg-pink-700 hover:bg-pink-900 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-            >
-              Register
-            </Link>
           </div>
-              <div className="rounded font-sans text-normal antialiased text-black list-none font-bold text-lg flex items-center">
-                <NavLink
-                to="/Account"
-                >Account
-                </NavLink>
-                <CgProfile  className="text-xl ml-2"/>
-                </div>
         </div>
       </div>
     </nav>

@@ -3,22 +3,66 @@ import { FaStar } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { useNavigate} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCarData } from '../../../Store'
+import { setCarData, setBookingStartTimeStamp, setBookingEndTimeStamp } from '../../../Store'
 
 
 const Cars = () => {
   const loggedIn = useSelector(state => state.loggedIn);
   const Location = useSelector(state => state.location); 
-  const Datestate = useSelector(state => state.dateState); 
-  const Timevalue = useSelector(state => state.timeValue); 
-  // const carDataFromStore = useSelector(state => state.carData);
+  const dateState = useSelector(state => state.dateState); 
+  const timeValue = useSelector(state => state.timeValue); 
+
   const dispatch = useDispatch();
 
-  // const {setCarData} = props
-  // console.log(Location)
   const [carListData, setCarList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
+
+  const startTime = timeValue[0].split('T')[1].split('.')[0]; // Extracting startTime
+  const endTime = timeValue[1].split('T')[1].split('.')[0];
+  
+  const addTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const date = new Date(0, 0, 0, hours, minutes);
+    date.setMinutes(date.getMinutes() + 330); // Adding 330 minutes (5 hours 30 minutes)
+    return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+  };
+
+  const updatedBookingStartTime = addTime(startTime);
+  const updatedBookingEndTime = addTime(endTime);
+
+  const combineDateTime = (date, time) => {
+    const [year, month, day] = date.split('T')[0].split('-').map(Number);
+    const [hours, minutes] = time.split(':').map(Number);
+    const seconds = 0; // Set seconds to 00 by default
+  
+    if (isNaN(hours) || isNaN(minutes)) {
+      throw new Error('Invalid time value');
+    }
+  
+    const dateObj = new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+  
+    if (isNaN(dateObj.getTime())) {
+      throw new Error('Invalid date or time value');
+    }
+  
+    const offsetMinutes = 330; // Offset for +05:30 timezone
+    const offsetHours = Math.floor(offsetMinutes / 60);
+    const offsetMinutesPart = String(offsetMinutes % 60).padStart(2, '0');
+  
+    return `${dateObj.toISOString().slice(0, 19)}+${String(offsetHours).padStart(2, '0')}:${offsetMinutesPart}`;
+  };
+  
+
+  const bookingStartTimeStamp = combineDateTime(dateState[0].startDate, updatedBookingStartTime);
+  const bookingEndTimeStamp = combineDateTime(dateState[0].endDate, updatedBookingEndTime);
+
+  useEffect(() => {
+    dispatch(setBookingStartTimeStamp(bookingStartTimeStamp));
+    dispatch(setBookingEndTimeStamp(bookingEndTimeStamp));
+  }, [dispatch, bookingStartTimeStamp, bookingEndTimeStamp]);
+  
 
   const handleClick = (CarDetails) => {
     dispatch(setCarData(CarDetails))
@@ -39,7 +83,7 @@ const Cars = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({Location, Datestate, Timevalue}),
+          body: JSON.stringify({Location, bookingStartTimeStamp, bookingEndTimeStamp}),
         });
         const data = await response.json();
         setCarList(data);
@@ -53,7 +97,7 @@ const Cars = () => {
     };
 
     fetchData();
-  }, [Location, Datestate, Timevalue]);
+  }, [Location, bookingStartTimeStamp, bookingEndTimeStamp]);
   
   
   return (
