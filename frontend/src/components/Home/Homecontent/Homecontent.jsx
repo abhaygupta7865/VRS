@@ -1,8 +1,13 @@
 import React from 'react'
 // import carPng from "../../assets/car.png"
 import BlackCarPng from "../../../assets/HomePageCar.png"
+import { useNavigate } from 'react-router-dom'
 
-const Hero = ({theme}) => {
+const Hero = () => {
+  const navigate= useNavigate();
+  const handleClick = () =>{
+     navigate("/Register_Login")
+  };
   return <div className='dark:bg-black dark:text-white duration-100 relative -z-20'>
     <div className="container min-h-[620px] flex">
       <div className='grid place-items-center grid-cols-1 sm:grid-cols-2 '>
@@ -28,7 +33,8 @@ const Hero = ({theme}) => {
           <button 
            data-aos="fade-up"
            data-aos-delay="1500"
-          className="btn bg-primary text-black px-6 py-2 rounded-md hover:bg-primary/80 duration-300">Get Started</button>
+          className="btn bg-primary text-black px-6 py-2 rounded-md hover:bg-primary/80 duration-300"
+          onClick={handleClick}>Get Started</button>
         </div>
       </div>
     </div>

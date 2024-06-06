@@ -17,6 +17,9 @@ import RegisterUser from "./components/Register_Login/RegisterUser.jsx";
 import MyTrip from "./components/MyTrip/MyTrip.jsx";
 import Customer_Account from "./components/Customer_Account/Customer_Account.jsx"
 import Agent_Account from "./components/Agent_Account/Agent_Account.jsx"
+import AgentCarAdd from "./components/AgentCarAdd/AgentCarAdd.jsx"
+import MyRental from "./components/MyRental/MyRental.jsx";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +35,8 @@ const router = createBrowserRouter(
       <Route path="/MyTrip" element={<MyTrip/>} />
       <Route path="/Customer_Account" element={<Customer_Account/>}/>
       <Route path="/Agent_Account" element={<Agent_Account/>}/>
+      <Route path="/AgentCarAdd" element={<AgentCarAdd/>}/>
+      <Route path="/MyRental" element={<MyRental/>}/>
     </Route>
   )
 );

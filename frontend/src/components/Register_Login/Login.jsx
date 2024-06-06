@@ -122,7 +122,7 @@ const Login = () => {
               />
               <label className="text-red-500 text-sm">{passwordError}</label>
             </div>
-            <div className="flex items-center mb-4 w-full">
+            <div className="flex items-center mb-4 w-full ml-48">
               <input
                 type="checkbox"
                 checked={isAgent}

@@ -95,7 +95,7 @@ function RegisterUser() {
     for (const key in formData) {
       formDataWithImage.append(key, formData[key]);
     }
-  
+    console.log(formDataWithImage)
     try {
       await axios.post('http://localhost:3080/registerUser', formDataWithImage, {
         headers: {
@@ -230,13 +230,13 @@ function RegisterUser() {
               <label htmlFor="profile_image" className="block text-sm font-medium mb-2 p-4">
                 Profile Image
               </label>
-              <div className='p-2'>
+              <div className='w-52 p-2'>
                 <input
                   type="file"
                   id="profile_image"
                   name="profile_image"
-                  accept="image/*" // Accept only image files
-                  onChange={handleImageChange} // Handle image file selection
+                  accept="image/*" 
+                  onChange={handleImageChange} 
                 />
               </div>
             </div>

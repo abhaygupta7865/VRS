@@ -11,19 +11,14 @@ const PaymentGateway = () => {
   const Location = useSelector(state => state.location);
   const dateState = useSelector(state => state.dateState);
   const timeValue = useSelector(state => state.timeValue);
-  const startTimeStamp = useSelector((state) => state.startTimeStamp)
-  const endTimeStamp = useSelector((state) => state.endTimeStamp)
+  const bookingStartTimeStamp = useSelector((state) => state.bookingStartTimeStamp)
+  const bookingEndTimeStamp = useSelector((state) => state.bookingEndTimeStamp)
 
 
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
-  // const calculateTotalPrice = (rent, startTime, endTime) => {
-  //   const start = new Date(`1970-01-01T${startTime}:00`).getHours();
-  //   const end = new Date(`1970-01-01T${endTime}:00`).getHours();
-  //   const hours = end - start;
-  //   return rent * hours;
-  // };
+  
   const startTime = timeValue[0].split('T')[1].split('.')[0]; // Extracting startTime
   const endTime = timeValue[1].split('T')[1].split('.')[0];
   
@@ -37,6 +32,7 @@ const PaymentGateway = () => {
   const updatedBookingStartTime = addTime(startTime);
   const updatedBookingEndTime = addTime(endTime);
 
+ 
 
   const onSubmit = async (data) => {
     try {
@@ -54,8 +50,9 @@ const PaymentGateway = () => {
         booking_start_time: updatedBookingStartTime,
         booking_end_time: updatedBookingEndTime,
         booking_location: Location,
-        starting_time: startTimeStamp,
-        end_time: endTimeStamp
+        starting_time: bookingStartTimeStamp,
+        end_time: bookingEndTimeStamp,
+        agent_email: carData.agent_email
       };
 
       const response = await axios.post('http://localhost:3080/api/bookings', bookingData);

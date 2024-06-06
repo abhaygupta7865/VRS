@@ -61,17 +61,17 @@ const Header = () => {
                     to="/MyTrip"
                     className="py-2 hover:border-b-2 hover:text-primary hover:border-primary transition-colors duration-500 text-lg font-medium"
                   >
-                    MY TRIPS
+                    TRIPS
                   </NavLink>
                 </li>
               )}
               {role === 'agent' && loggedIn && (
                 <li className="py-4">
                   <NavLink
-                    to="/CarBookingHistory"
+                    to="/MyRental"
                     className="py-2 hover:border-b-2 hover:text-primary hover:border-primary transition-colors duration-500 text-lg font-medium"
                   >
-                    MY CAR BOOKING
+                    MY RENTALS
                   </NavLink>
                 </li>
               )}

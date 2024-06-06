@@ -6,6 +6,8 @@ import pg from 'pg';
 import { CronJob } from 'cron';
 import multer from 'multer'; 
 import { v4 as uuidv4 } from 'uuid';
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
 
 
 const app = express();
@@ -37,6 +39,11 @@ const upload = multer({ storage: storage });
 
 // Define a JWT secret key. This should be isolated by using env variables for security
 const jwtSecretKey = 'dsfdsfsdfdsvcsvdfgefg'; // Replace with a secure key
+
+const razorpayInstance = new Razorpay({
+  key_id: 'rzp_test_mPlGrfChkI081N',
+  key_secret: 'vD8wccCTFXqgqOYSgNnaeR8r'
+});
 
 // Set up CORS and JSON middlewares
 app.use(cors());
@@ -245,16 +252,74 @@ app.post('/api/agentvehicles', async (req, res) => {
   }
 });
 
+app.post('/api/AddVehicle', upload.single('carImage'), async (req, res) => {
+  try {
+    const {
+      carName,
+      brand,
+      licensePlate,
+      engineType,
+      transmissionType,
+      rentPerHour,
+      status,
+      seats,
+      location,
+      city,
+      state,
+      email,
+    } = req.body;
+
+    const carImage = req.file ? `http://localhost:3080/rent_car_images/${req.file.filename}` : null;
+
+    const newVehicle = await pool.query(
+      'INSERT INTO vehicles (vehicle_license_plate, vehicle_location, vehicle_status, vehicle_model, vehicle_engine_type, vehicle_rent, vehicle_seat_capacity,vehicle_image, vehicle_city, vehicle_state, vehicle_name, vehicle_transmission_type, agent_email, vehicle_brand) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *',
+      [licensePlate,location,status,carName,engineType, rentPerHour,seats,carImage, city, state, carName,transmissionType,email,brand]
+    );
+
+    res.json(newVehicle.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+app.delete('/api/deletevehicle', async (req, res) => {
+  const { vehicle_id } = req.body;
+
+  if (!vehicle_id) {
+    return res.status(400).json({ error: 'Vehicle ID is required' });
+  }
+
+  try {
+    // Delete the vehicle from the database
+    await pool.query('DELETE FROM vehicles WHERE vehicle_id = $1', [vehicle_id]);
+
+    res.json({ message: 'Vehicle deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting vehicle:', error);
+    res.status(500).json({ error: 'Failed to delete vehicle' });
+  }
+});
+
+
+
 
 app.post('/api/bookingDetails', async (req, res) => {
   const userEmail = req.body.email;
-  
+  const role = req.body.role; // Assuming role is sent from the frontend
+  console.log(role)
   if (!userEmail) {
     return res.status(400).json({ message: 'Email is required' });
   }
 
-  try {
-    const query = `
+  if (!role) {
+    return res.status(400).json({ message: 'Role is required' });
+  }
+
+  let query = '';
+  
+  if (role === 'customer') {
+    query = `
       SELECT 
         b.*, 
         v.*
@@ -265,7 +330,23 @@ app.post('/api/bookingDetails', async (req, res) => {
       WHERE 
         b.customer_email = $1
     `;
+  } else if (role === 'agent') {
+    query = `
+      SELECT 
+        b.*, 
+        v.*
+      FROM 
+        bookings b
+      LEFT JOIN 
+        vehicles v ON b.vehicle_id = v.vehicle_id
+      WHERE 
+        b.agent_email = $1
+    `;
+  } else {
+    return res.status(400).json({ message: 'Invalid role' });
+  }
 
+  try {
     const { rows } = await pool.query(query, [userEmail]); 
 
     if (!rows.length) {
@@ -278,6 +359,7 @@ app.post('/api/bookingDetails', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
 
 
 // API endpoint to update booking details
@@ -298,10 +380,11 @@ app.post('/api/bookings', async (req, res) => {
       booking_end_time,
       booking_location,
       starting_time,
-      end_time
+      end_time,
+      agent_email
     } = req.body;
 
-    console.log('Received Data:', req.body); // Log received data for debugging
+    console.log('Received Data:', req.body); 
 
     
     const query = `
@@ -320,9 +403,10 @@ app.post('/api/bookings', async (req, res) => {
         booking_end_time,
         booking_location,
         starting_time, 
-        end_time
+        end_time,
+        agent_email
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16
       )
     `;
 
@@ -341,7 +425,8 @@ app.post('/api/bookings', async (req, res) => {
       booking_end_time,
       booking_location,
       starting_time,
-      end_time
+      end_time,
+      agent_email
     ];
 
     await pool.query(query, values);
@@ -373,6 +458,42 @@ const updateBookingStatus = async () => {
     client.release();
   }
 };
+
+
+
+app.post('/create-order', async (req, res) => {
+  const { amount, currency, receipt } = req.body;
+  
+  try {
+    const options = {
+      amount: amount * 100, // amount in the smallest currency unit
+      currency: currency,
+      receipt: receipt
+    };
+    
+    const order = await razorpayInstance.orders.create(options);
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint to verify payment signature
+app.post('/verify-signature', (req, res) => {
+  const { order_id, payment_id, razorpay_signature } = req.body;
+
+  const generated_signature = crypto.createHmac('sha256', 'YOUR_SECRET')
+    .update(order_id + "|" + payment_id)
+    .digest('hex');
+
+  if (generated_signature === razorpay_signature) {
+    res.json({ success: true, message: "Payment is successful and verified" });
+    // Store payment details in your database
+  } else {
+    res.json({ success: false, message: "Payment verification failed" });
+  }
+});
+
 
 // Cron job to run every 5 minutes
 const job = new CronJob('*/5 * * * *', updateBookingStatus);
